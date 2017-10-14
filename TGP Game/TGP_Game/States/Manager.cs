@@ -1,22 +1,23 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace TGP_Game.States
 {
-    public static class Manager
+    static class Manager
     {
         // Define different states
 
         public enum State
         {
             Menu,
-            Character,
-            Options,
             About,
+            Options,
+            Character,
             Game,
             Death,
-            Win,
+            Win
         }
 
         // Current and new states, set to Menu by default
@@ -24,17 +25,15 @@ namespace TGP_Game.States
         private static State CurrentState = State.Menu;
         private static State NewState = State.Menu;
 
-        // Alpha value and blank Texture2D to fade the screen when switching states
-
-        private static float TransitionAlpha = 0f;
-        private static Texture2D BlankTexture;
-
         public static void SetNewState(State newState) => NewState = newState;
 
-        public static void Initialize(ContentManager content)
-        {
-            BlankTexture = content.Load<Texture2D>("Images/BlankTexture");
-        }
+        // Alpha value to fade the screen when switching states
+
+        private static float TransitionAlpha = 0f;
+
+        // Bool to check if left mouse button has previously been pressed
+
+        public static bool PreviousMouse1State;
 
         public static void Update()
         {
@@ -48,17 +47,45 @@ namespace TGP_Game.States
                 else CurrentState = NewState;
             }
             else if (TransitionAlpha > 0f) TransitionAlpha -= 0.05f;
+
+            // Update current state
+
+            switch (CurrentState)
+            {
+                case State.Menu:
+                    Menu.Update();
+                    break;
+                case State.About:
+                    About.Update();
+                    break;
+            }
+
+            // Update left mouse button state
+
+            PreviousMouse1State = (Mouse.GetState().LeftButton == ButtonState.Pressed);
         }
 
-        public static void Draw(SpriteBatch spriteBatch, ContentManager content)
+        public static void Draw()
         {
-            spriteBatch.Begin();
+            Main.SpriteBatch.Begin();
+
+            // Draw current state
+
+            switch (CurrentState)
+            {
+                case State.Menu:
+                    Menu.Draw();
+                    break;
+                case State.About:
+                    About.Draw();
+                    break;
+            }
 
             // Draw black rectangle over all screen with TransitionAlpha for state transition
 
-            spriteBatch.Draw(BlankTexture, new Rectangle(0, 0, Main.Graphics.PreferredBackBufferWidth, Main.Graphics.PreferredBackBufferHeight), Color.Black * TransitionAlpha);
+            Main.SpriteBatch.Draw(Main.Blank, new Rectangle(0, 0, Main.Graphics.PreferredBackBufferWidth, Main.Graphics.PreferredBackBufferHeight), Color.Black * TransitionAlpha);
 
-            spriteBatch.End();
+            Main.SpriteBatch.End();
         }
     }
 }

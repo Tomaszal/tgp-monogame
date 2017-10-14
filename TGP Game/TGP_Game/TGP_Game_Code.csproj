@@ -58,6 +58,9 @@
     <PlatformTarget>x86</PlatformTarget>
     <XnaCompressContent>true</XnaCompressContent>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
@@ -71,10 +74,13 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Button.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Main.cs" />
+    <Compile Include="States\About.cs" />
     <Compile Include="States\Manager.cs" />
+    <Compile Include="States\Menu.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
@@ -83,9 +89,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TGP_GameContent\TGP_GameContent.contentproj">
-      <Name>TGP_GameContent</Name>
+    <ProjectReference Include="..\TGP_GameContent\TGP_Game_Content.contentproj">
+      <Name>TGP_Game_Content</Name>
       <XnaReferenceType>Content</XnaReferenceType>
+      <Project>{95E9B6E2-E791-4434-91F9-AA6956EA1817}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
