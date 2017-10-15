@@ -1,22 +1,26 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.GamerServices;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
 
 namespace TGP_Game
 {
-    // Main class of the game
-
-    public class Main : Microsoft.Xna.Framework.Game
+    public class Main : Game
     {
         public static GraphicsDeviceManager Graphics;
         public static SpriteBatch SpriteBatch;
+
+        // States
+
+        private States.State[] States = new States.State[4];
+
+        private static int CurrentStateIndex = 0;
+        public static int NewStateIndex { private get; set; } = 0;
+
+        // Alpha value to fade the screen when transitioning states
+
+        private static float TransitionAlpha = 0f;
 
         // Content
 
@@ -27,14 +31,41 @@ namespace TGP_Game
         public static Texture2D Logo;
         public static Texture2D Menu;
 
-        public static SoundEffect ButtonSound;                       
+        public static SoundEffect ButtonSound;
 
-        // Public variables for changing things from static members
+        // Boolean to check if left mouse button has been pressed in the previous cycle
 
-        public static bool SetMouseVisibility;
-        public static bool ExitGame;
+        public static bool PreviousLeftMouseButtonState;
 
-        public Main()
+        private static void TransitionState(GameTime gameTime)
+        {
+            // If CurrentState matches NewState progress fading in and escape method or escape method if fading in is already done
+
+            if (CurrentStateIndex == NewStateIndex)
+            {
+                if (TransitionAlpha > 0f)
+                {
+                    TransitionAlpha -= 0.005f * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+                    return;
+                }
+
+                return;
+            }
+
+            // If fading out is not done progress it and escape method
+
+            if (TransitionAlpha < 1f)
+            {
+                TransitionAlpha += 0.005f * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+                return;
+            }
+
+            // Set CurrentState to NewState
+
+            CurrentStateIndex = NewStateIndex;
+        }
+
+        public Main() : base()
         {
             Graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -42,8 +73,16 @@ namespace TGP_Game
         
         protected override void Initialize()
         {
-            States.Options.Initialize();
+            // Add states
 
+            States[0] = new States.Menu(this);
+            States[1] = new States.Options();
+            States[2] = new States.About();
+            States[3] = new States.Character();
+
+            // Make mouse visible and toggle full screen
+
+            IsMouseVisible = true;
             Graphics.ToggleFullScreen();
 
             base.Initialize();
@@ -75,22 +114,27 @@ namespace TGP_Game
             Song BackgroundMusic = Content.Load<Song>("Sounds/Background");
             MediaPlayer.Play(BackgroundMusic);
             MediaPlayer.IsRepeating = true;
+
+            base.LoadContent();
         }
 
         protected override void Update(GameTime gameTime)
         {
             // Only update game if the window is focused
 
-            if (this.IsActive)
+            if (IsActive)
             {
-                States.Manager.Update();
-            }
+                // Transition to the new state if it is different from the current one
 
-            IsMouseVisible = SetMouseVisibility;
+                TransitionState(gameTime);
 
-            if (ExitGame)
-            {
-                Exit();
+                // Update current state
+
+                States[CurrentStateIndex].Update(gameTime);
+
+                // Update left mouse button state
+
+                PreviousLeftMouseButtonState = (Mouse.GetState().LeftButton == ButtonState.Pressed);
             }
 
             base.Update(gameTime);
@@ -100,7 +144,17 @@ namespace TGP_Game
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            States.Manager.Draw();
+            SpriteBatch.Begin();
+
+            // Draw current state
+
+            States[CurrentStateIndex].Draw(gameTime);
+
+            // Draw black rectangle over all screen with TransitionAlpha for state transition
+
+            SpriteBatch.Draw(Blank, new Rectangle(0, 0, Graphics.PreferredBackBufferWidth, Graphics.PreferredBackBufferHeight), Color.Black * TransitionAlpha);
+
+            SpriteBatch.End();
 
             base.Draw(gameTime);
         }

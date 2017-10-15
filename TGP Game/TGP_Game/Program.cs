@@ -1,21 +1,15 @@
-using System;
-
 namespace TGP_Game
 {
-#if WINDOWS || XBOX
+#if WINDOWS
     static class Program
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
         static void Main(string[] args)
         {
-            using (Main game = new Main())
+            using (Main Game = new Main())
             {
-                game.Run();
+                Game.Run();
             }
         }
     }
 #endif
 }
-

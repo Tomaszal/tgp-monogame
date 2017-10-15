@@ -1,42 +1,34 @@
 ﻿using Microsoft.Xna.Framework;
+using System.Reflection;
 
 namespace TGP_Game.States
 {
-    static class About
+    class About : State
     {
-        // Define Return button
-
-        private static Button Return = new Button("Return", Color.Cyan, new Vector2(0, 180));
-
-        public static void Update()
+        public About()
         {
-            // Check Return button and set state to Menu
+            // Add texts
 
-            if (Return.Check())
-            {
-                Manager.SetNewState(Manager.State.Menu);
-            }
+            Texts.Add(new Text(Color.White, new Vector2(0, -200), "Version " + Assembly.GetExecutingAssembly().GetName().Version + " (rework)"));
+            Texts.Add(new Text(Color.White, new Vector2(0, -120), "Developed by:"));
+            Texts.Add(new Text(Color.White, new Vector2(0, -90), "Tomas Zaluckij"));
+            Texts.Add(new Text(Color.White, new Vector2(0, -60), "(@Tomaszal)"));
+            Texts.Add(new Text(Color.White, new Vector2(0, 0), "Music: Torrey Desmond Rogers"));
+            Texts.Add(new Text(Color.White, new Vector2(0, 30), "Sound effects: SoundBible.com"));
+            Texts.Add(new Text(Color.White, new Vector2(0, 100), "Background: Wyatt S. Miles (flashpotatoes)"));
+
+            // Add buttons
+
+            Buttons.Add(new Button("Return", new Vector2(0, 180), Color.White, 0));
         }
 
-        public static void Draw()
+        public override void Draw(GameTime gameTime)
         {
             // Draw background
 
-            Manager.DrawMenuBackground();
+            DrawMenuBackground();
 
-            // Draw text
-
-            Manager.DrawText(Color.White, new Vector2(0, -200), "Version 0.03 (rework)");
-            Manager.DrawText(Color.White, new Vector2(0, -120), "Developed by:");
-            Manager.DrawText(Color.White, new Vector2(0, -90), "Tomas Zaluckij");
-            Manager.DrawText(Color.White, new Vector2(0, -60), "(@Tomaszal)");
-            Manager.DrawText(Color.White, new Vector2(0, 0), "Music: Torrey Desmond Rogers");
-            Manager.DrawText(Color.White, new Vector2(0, 30), "Sound effects: SoundBible.com");
-            Manager.DrawText(Color.White, new Vector2(0, 100), "Background: Wyatt S. Miles (flashpotatoes)");
-
-            // Draw Return button
-
-            Return.Draw();
+            base.Draw(gameTime);
         }
     }
 }

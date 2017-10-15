@@ -2,14 +2,11 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace TGP_Game.States
 {
-    static class Options
+    class Options : State
     {
         // Resolution parameters
 
@@ -18,39 +15,84 @@ namespace TGP_Game.States
 
         // Curent volume (increments of 10%), set to 100% by default
 
-        public static int CurrentVolume = 10;
+        private static int CurrentVolume = 10;
 
-        // Define each button
-
-        private static Button Fullscreen = new Button("Fullscreen: NaN", Color.Cyan, new Vector2(0, -200));
-        private static Button Resolution = new Button("Resolution: NaN", Color.Cyan, new Vector2(0, -150));
-        private static Button Volume = new Button("Volume: NaN", Color.Cyan, new Vector2(0, -100));
-        private static Button Difficulty = new Button("Difficulty: NaN", Color.Cyan, new Vector2(0, 20));
-        private static Button Annotations = new Button("Annotations: NaN", Color.Cyan, new Vector2(0, 70));
-        private static Button Return = new Button("Return", Color.Cyan, new Vector2(0, 180));
-
-        private static void ToggleVolume()
+        private class FullScreen : Button
         {
-            // Toggle Volume
+            public FullScreen(string text, Vector2 position) : base(text, position, Color.White, -1) { }
 
-            CurrentVolume = (CurrentVolume == 0) ? 10 : CurrentVolume - 1;
+            public override void Action()
+            {
+                // Toggle full screen
 
-            // Set volume of media player and sound effects
+                Main.Graphics.ToggleFullScreen();
 
-            MediaPlayer.Volume = (float)CurrentVolume / 10;
-            SoundEffect.MasterVolume = (float)CurrentVolume / 10;
+                base.Action();
+            }
         }
 
-        private static void SetResolution(bool toggle)
+        private class Resolution : Button
         {
-            // Toggle the index if needed
+            public Resolution(string text, Vector2 position) : base(text, position, Color.White, -1) { }
 
-            if (toggle)
+            public override void Action()
             {
-                CurrentResolutionIndex = (CurrentResolutionIndex == MaxResolutionIndex) ? 1 : CurrentResolutionIndex + 1;
-            }
+                // Toggle resolution and apply new one
 
-            // Set resolution according to the index
+                CurrentResolutionIndex = (CurrentResolutionIndex == MaxResolutionIndex) ? 1 : CurrentResolutionIndex + 1;
+
+                ApplyResolution();
+
+                base.Action();
+            }
+        }
+
+        private class Volume : Button
+        {
+            public Volume(string text, Vector2 position) : base(text, position, Color.White, -1) { }
+
+            public override void Action()
+            {
+                // Toggle volume
+
+                CurrentVolume = (CurrentVolume == 0) ? 10 : CurrentVolume - 1;
+
+                // Set volume of media player and sound effects
+
+                MediaPlayer.Volume = (float)CurrentVolume / 10;
+                SoundEffect.MasterVolume = (float)CurrentVolume / 10;
+
+                base.Action();
+            }
+        }
+
+        private class Difficulty : Button
+        {
+            public Difficulty(string text, Vector2 position) : base(text, position, Color.White, -1) { }
+
+            public override void Action()
+            {
+                // Toggle difficulty
+
+                base.Action();
+            }
+        }
+
+        private class Annotations : Button
+        {
+            public Annotations(string text, Vector2 position) : base(text, position, Color.White, -1) { }
+
+            public override void Action()
+            {
+                // Toggle annotations
+
+                base.Action();
+            }
+        }
+
+        private static void ApplyResolution()
+        {
+            // Apply resolution according to the index
 
             switch (CurrentResolutionIndex)
             {
@@ -82,9 +124,18 @@ namespace TGP_Game.States
 
             Main.Graphics.ApplyChanges();
         }
-
-        public static void Initialize()
+        
+        public Options()
         {
+            // Add buttons
+
+            Buttons.Add(new FullScreen("Full screen: NaN", new Vector2(0, -200)));
+            Buttons.Add(new Resolution("Resolution: NaN", new Vector2(0, -150)));
+            Buttons.Add(new Volume("Volume: NaN", new Vector2(0, -100)));
+            Buttons.Add(new Difficulty("Difficulty: NaN", new Vector2(0, 20)));
+            Buttons.Add(new Annotations("Annotations: NaN", new Vector2(0, 70)));
+            Buttons.Add(new Button("Return", new Vector2(0, 180), Color.White, 0));
+
             // Detect the most popular screen resolutions
 
             switch (GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width * GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height)
@@ -121,58 +172,27 @@ namespace TGP_Game.States
 
             // Apply chosen resolution
 
-            SetResolution(false);
+            ApplyResolution();
         }
 
-        public static void Update()
+        public override void Update(GameTime gameTime)
         {
             // Update text of each button that needs it
 
-            Fullscreen.Text = "Fullscreen: " + ((Main.Graphics.IsFullScreen) ? "Yes" : "No");
-            Resolution.Text = "Resolution: " + Main.Graphics.PreferredBackBufferWidth + " x " + Main.Graphics.PreferredBackBufferHeight;
-            Volume.Text = "Volume: " + CurrentVolume * 10 + "%";
+            Buttons.OfType<FullScreen>().FirstOrDefault().Text = "Fullscreen: " + ((Main.Graphics.IsFullScreen) ? "Yes" : "No");
+            Buttons.OfType<Resolution>().FirstOrDefault().Text = "Resolution: " + Main.Graphics.PreferredBackBufferWidth + " x " + Main.Graphics.PreferredBackBufferHeight;
+            Buttons.OfType<Volume>().FirstOrDefault().Text = "Volume: " + CurrentVolume * 10 + "%";
 
-            // Check each button and act accordingly
-
-            if (Fullscreen.Check())
-            {
-                Main.Graphics.ToggleFullScreen();
-            }
-
-            if (Resolution.Check())
-            {
-                SetResolution(true);
-            }
-
-            if (Volume.Check())
-            {
-                ToggleVolume();
-            }
-
-            // WIP
-            Difficulty.Check();
-            Annotations.Check();
-
-            if (Return.Check())
-            {
-                Manager.SetNewState(Manager.State.Menu);
-            }
+            base.Update(gameTime);
         }
 
-        public static void Draw()
+        public override void Draw(GameTime gameTime)
         {
             // Draw background
 
-            Manager.DrawMenuBackground();
+            DrawMenuBackground();
 
-            // Draw each button
-
-            Fullscreen.Draw();
-            Resolution.Draw();
-            Volume.Draw();
-            Difficulty.Draw();
-            Annotations.Draw();
-            Return.Draw();
+            base.Draw(gameTime);
         }
     }
 }

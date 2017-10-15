@@ -1,83 +1,102 @@
 ﻿using Microsoft.Xna.Framework;
+using System.Linq;
 
 namespace TGP_Game.States
 {
-    static class Menu
+    class Menu : State
     {
-        // Define each button
-
-        static Button Restart = new Button("Restart", Color.OrangeRed, new Vector2(0, -100));
-        static Button Play = new Button("Play", Color.Cyan, new Vector2(0, -50));
-        static Button Options = new Button("Options", Color.Cyan, new Vector2(0, 0));
-        static Button About = new Button("About", Color.Cyan, new Vector2(0, 50));
-        static Button Exit = new Button("Exit", Color.Cyan, new Vector2(0, 100));
-
-        public static void Update()
+        private class Play : Button
         {
-            // Make mouse visible
+            public Play(string text, Vector2 position) : base(text, position, Color.White, -1) { }
 
-            Main.SetMouseVisibility = true;
-
-            // Check each button and set states accordingly
-
-            if (Options.Check())
+            public override void Action()
             {
-                Manager.SetNewState(Manager.State.Options);
-            }
+                // Set new state to character selection screen if no game is in progress, otherwise set new state back to game screen
 
-            if (About.Check())
-            {
-                Manager.SetNewState(Manager.State.About);
-            }
-
-            if (Exit.Check())
-            {
-                Main.ExitGame = true;
-            }
-
-            // If game is not in progress load Character state, otherwise return to Game state
-
-            if (Play.Check())
-            {
-                if (Play.Text == "Play")
+                if (Text == "Play")
                 {
-                    Manager.SetNewState(Manager.State.Character);
+                    Main.NewStateIndex = 3;
                 }
                 else
                 {
-                    Manager.SetNewState(Manager.State.Game);
+                    Main.NewStateIndex = 4;
                 }
+
+                base.Action();
+            }
+        }
+        
+        private class Restart : Button
+        {
+            Button Play;
+
+            public Restart(string text, Vector2 position, int stateIndex, Button play) : base(text, position, Color.White, stateIndex)
+            {
+                Play = play;
             }
 
-            // Only check restart button if game is in progress
-
-            if (Play.Text == "Resume")
+            public override bool Check()
             {
-                if (Restart.Check()) Manager.SetNewState(Manager.State.Game);
+                // Only check restart button if game is in progress (if it can be resumed)
+
+                if (Play.Text == "Resume")
+                {
+                    return base.Check();
+                }
+
+                return false;
+            }
+
+            public override void Draw()
+            {
+                // Only check restart button if game is in progress (if it can be resumed)
+
+                if (Play.Text == "Resume")
+                {
+                    base.Draw();
+                }
             }
         }
 
-        public static void Draw()
+        private class Exit : Button
+        {
+            private Game Instance;
+
+            public Exit(string text, Vector2 position, Game instance) : base(text, position, Color.White, -1)
+            {
+                Instance = instance;
+            }
+
+            public override void Action()
+            {
+                // Exit the game
+                
+                Instance.Exit();
+
+                base.Action();
+            }
+        }
+
+        public Menu(Game instance)
+        {
+            // Add buttons
+
+            Buttons.Add(new Play("Play", new Vector2(0, -50)));
+            Buttons.Add(new Restart("Restart", new Vector2(0, -100), 1, Buttons.OfType<Play>().FirstOrDefault()));
+            Buttons.Add(new Button("Options", new Vector2(0, 0), Color.White, 1));
+            Buttons.Add(new Button("About", new Vector2(0, 50), Color.White, 2));
+            Buttons.Add(new Exit("Exit", new Vector2(0, 100), instance));
+        }
+
+        public override void Draw(GameTime gameTime)
         {
             // Draw background and logo
 
-            Manager.DrawMenuBackground();
+            DrawMenuBackground();
 
             Main.SpriteBatch.Draw(Main.Logo, new Rectangle(Main.Graphics.PreferredBackBufferWidth / 2 - 135, 20, 300, 120), Color.White);
 
-            // Draw all buttons
-
-            Play.Draw();
-            Options.Draw();
-            About.Draw();
-            Exit.Draw();
-
-            // Only draw Restart button if game is in progress
-
-            if (Play.Text == "Resume")
-            {
-                Restart.Draw();
-            }
+            base.Draw(gameTime);
         }
     }
 }
