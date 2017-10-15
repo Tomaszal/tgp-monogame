@@ -4,7 +4,7 @@ namespace TGP_Game.States
 {
     static class Menu
     {
-        // Create and define all buttons
+        // Define each button
 
         static Button Restart = new Button("Restart", Color.OrangeRed, new Vector2(0, -100));
         static Button Play = new Button("Play", Color.Cyan, new Vector2(0, -50));
@@ -18,7 +18,7 @@ namespace TGP_Game.States
 
             Main.SetMouseVisibility = true;
 
-            // Check all buttons for a press and set states accordingly
+            // Check each button and set states accordingly
 
             if (Options.Check())
             {
@@ -61,7 +61,7 @@ namespace TGP_Game.States
         {
             // Draw background and logo
 
-            Main.SpriteBatch.Draw(Main.Menu, new Rectangle(0, 0, Main.Graphics.PreferredBackBufferWidth, Main.Graphics.PreferredBackBufferHeight), Color.White);
+            Manager.DrawMenuBackground();
 
             Main.SpriteBatch.Draw(Main.Logo, new Rectangle(Main.Graphics.PreferredBackBufferWidth / 2 - 135, 20, 300, 120), Color.White);
 

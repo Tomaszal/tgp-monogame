@@ -79,6 +79,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="States\About.cs" />
+    <Compile Include="States\Character.cs" />
     <Compile Include="States\Manager.cs" />
     <Compile Include="States\Menu.cs" />
     <Compile Include="States\Options.cs" />

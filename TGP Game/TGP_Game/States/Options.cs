@@ -9,17 +9,8 @@ using System.Text;
 
 namespace TGP_Game.States
 {
-    class Options
+    static class Options
     {
-        // Create and define all buttons
-
-        private static Button Fullscreen = new Button("Fullscreen: NaN", Color.Cyan, new Vector2(0, -200));
-        private static Button Resolution = new Button("Resolution: NaN", Color.Cyan, new Vector2(0, -150));
-        private static Button Volume = new Button("Volume: NaN", Color.Cyan, new Vector2(0, -100));
-        private static Button Difficulty = new Button("Difficulty: NaN", Color.Cyan, new Vector2(0, 20));
-        private static Button Annotations = new Button("Annotations: NaN", Color.Cyan, new Vector2(0, 70));
-        private static Button Return = new Button("Return", Color.Cyan, new Vector2(0, 180));
-
         // Resolution parameters
 
         private static int CurrentResolutionIndex;
@@ -28,6 +19,15 @@ namespace TGP_Game.States
         // Curent volume (increments of 10%), set to 100% by default
 
         public static int CurrentVolume = 10;
+
+        // Define each button
+
+        private static Button Fullscreen = new Button("Fullscreen: NaN", Color.Cyan, new Vector2(0, -200));
+        private static Button Resolution = new Button("Resolution: NaN", Color.Cyan, new Vector2(0, -150));
+        private static Button Volume = new Button("Volume: NaN", Color.Cyan, new Vector2(0, -100));
+        private static Button Difficulty = new Button("Difficulty: NaN", Color.Cyan, new Vector2(0, 20));
+        private static Button Annotations = new Button("Annotations: NaN", Color.Cyan, new Vector2(0, 70));
+        private static Button Return = new Button("Return", Color.Cyan, new Vector2(0, 180));
 
         private static void ToggleVolume()
         {
@@ -126,13 +126,13 @@ namespace TGP_Game.States
 
         public static void Update()
         {
-            // Update text of buttons
+            // Update text of each button that needs it
 
             Fullscreen.Text = "Fullscreen: " + ((Main.Graphics.IsFullScreen) ? "Yes" : "No");
             Resolution.Text = "Resolution: " + Main.Graphics.PreferredBackBufferWidth + " x " + Main.Graphics.PreferredBackBufferHeight;
             Volume.Text = "Volume: " + CurrentVolume * 10 + "%";
 
-            // Check buttons and act accordingly
+            // Check each button and act accordingly
 
             if (Fullscreen.Check())
             {
@@ -163,9 +163,9 @@ namespace TGP_Game.States
         {
             // Draw background
 
-            Main.SpriteBatch.Draw(Main.Menu, new Rectangle(0, 0, Main.Graphics.PreferredBackBufferWidth, Main.Graphics.PreferredBackBufferHeight), Color.White);
+            Manager.DrawMenuBackground();
 
-            // Draw all buttons
+            // Draw each button
 
             Fullscreen.Draw();
             Resolution.Draw();

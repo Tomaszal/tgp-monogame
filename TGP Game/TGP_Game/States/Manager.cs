@@ -58,6 +58,13 @@ namespace TGP_Game.States
             CurrentState = NewState;
         }
 
+        public static void DrawMenuBackground()
+        {
+            // Draw menu background
+
+            Main.SpriteBatch.Draw(Main.Menu, new Rectangle(0, 0, Main.Graphics.PreferredBackBufferWidth, Main.Graphics.PreferredBackBufferHeight), Color.White);
+        }
+
         public static void DrawText(Color color, Vector2 position, string text)
         {
             // Draw text at position relative to the middle of the screen with DefaultFont
@@ -84,6 +91,9 @@ namespace TGP_Game.States
                 case State.Options:
                     Options.Update();
                     break;
+                case State.Character:
+                    Character.Update();
+                    break;
             }
 
             // Update left mouse button state
@@ -107,6 +117,9 @@ namespace TGP_Game.States
                     break;
                 case State.Options:
                     Options.Draw();
+                    break;
+                case State.Character:
+                    Character.Draw();
                     break;
             }
 

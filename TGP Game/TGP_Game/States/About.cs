@@ -2,15 +2,15 @@
 
 namespace TGP_Game.States
 {
-    class About
+    static class About
     {
-        // Create and define Return button
+        // Define Return button
 
         private static Button Return = new Button("Return", Color.Cyan, new Vector2(0, 180));
 
         public static void Update()
         {
-            // Check Return button for a press and set state to Menu
+            // Check Return button and set state to Menu
 
             if (Return.Check())
             {
@@ -22,11 +22,11 @@ namespace TGP_Game.States
         {
             // Draw background
 
-            Main.SpriteBatch.Draw(Main.Menu, new Rectangle(0, 0, Main.Graphics.PreferredBackBufferWidth, Main.Graphics.PreferredBackBufferHeight), Color.White);
+            Manager.DrawMenuBackground();
 
-            // Draw 'about' text
+            // Draw text
 
-            Manager.DrawText(Color.White, new Vector2(0, -200), "Version 0.02 (rework)");
+            Manager.DrawText(Color.White, new Vector2(0, -200), "Version 0.03 (rework)");
             Manager.DrawText(Color.White, new Vector2(0, -120), "Developed by:");
             Manager.DrawText(Color.White, new Vector2(0, -90), "Tomas Zaluckij");
             Manager.DrawText(Color.White, new Vector2(0, -60), "(@Tomaszal)");
