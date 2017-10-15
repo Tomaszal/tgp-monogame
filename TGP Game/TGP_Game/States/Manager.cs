@@ -35,18 +35,41 @@ namespace TGP_Game.States
 
         public static bool PreviousMouse1State;
 
+        private static void Transition()
+        {
+            // If CurrentState matches NewState progress fading in and exit method
+
+            if (CurrentState == NewState && TransitionAlpha > 0f)
+            {
+                TransitionAlpha -= 0.05f;
+                return;
+            }
+
+            // If fading out is not done progress it and exit method
+
+            if (TransitionAlpha < 1f)
+            {
+                TransitionAlpha += 0.05f;
+                return;
+            }
+
+            // Set CurrentState to NewState
+
+            CurrentState = NewState;
+        }
+
+        public static void DrawText(Color color, Vector2 position, string text)
+        {
+            // Draw text at position relative to the middle of the screen with DefaultFont
+
+            Main.SpriteBatch.DrawString(Main.DefaultFont, text, new Vector2(Main.Graphics.PreferredBackBufferWidth / 2 - Main.DefaultFont.MeasureString(text).X / 2 + position.X, Main.Graphics.PreferredBackBufferHeight / 2 + position.Y), color);
+        }
+
         public static void Update()
         {
-            // Increace TransitionAlpha if NewState is different from CurrentState to fade screen out
-            // When TransitionAlpha is 1f (black screen) set CurrentState to NewState
-            // Decreace TransitionAlpha when done to fade screen back in
+            // If there is a NewState fade screen out, set CurrentState to it and fade screen back in
 
-            if (NewState != CurrentState)
-            {
-                if (TransitionAlpha < 1f) TransitionAlpha += 0.05f;
-                else CurrentState = NewState;
-            }
-            else if (TransitionAlpha > 0f) TransitionAlpha -= 0.05f;
+            Transition();
 
             // Update current state
 
@@ -57,6 +80,9 @@ namespace TGP_Game.States
                     break;
                 case State.About:
                     About.Update();
+                    break;
+                case State.Options:
+                    Options.Update();
                     break;
             }
 
@@ -78,6 +104,9 @@ namespace TGP_Game.States
                     break;
                 case State.About:
                     About.Draw();
+                    break;
+                case State.Options:
+                    Options.Draw();
                     break;
             }
 

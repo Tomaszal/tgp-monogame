@@ -4,7 +4,7 @@ namespace TGP_Game.States
 {
     static class Menu
     {
-        // Create and define every button
+        // Create and define all buttons
 
         static Button Restart = new Button("Restart", Color.OrangeRed, new Vector2(0, -100));
         static Button Play = new Button("Play", Color.Cyan, new Vector2(0, -50));
@@ -18,22 +18,43 @@ namespace TGP_Game.States
 
             Main.SetMouseVisibility = true;
 
-            // Check every button for a press and set states accordingly
-            
-            if (Options.Check()) Manager.SetNewState(Manager.State.Options);
-            if (About.Check()) Manager.SetNewState(Manager.State.About);
-            if (Exit.Check()) Main.ExitGame = true;
+            // Check all buttons for a press and set states accordingly
+
+            if (Options.Check())
+            {
+                Manager.SetNewState(Manager.State.Options);
+            }
+
+            if (About.Check())
+            {
+                Manager.SetNewState(Manager.State.About);
+            }
+
+            if (Exit.Check())
+            {
+                Main.ExitGame = true;
+            }
 
             // If game is not in progress load Character state, otherwise return to Game state
 
             if (Play.Check())
-                if (Play.GetText() == "Play") Manager.SetNewState(Manager.State.Character);
-                else Manager.SetNewState(Manager.State.Game);
+            {
+                if (Play.Text == "Play")
+                {
+                    Manager.SetNewState(Manager.State.Character);
+                }
+                else
+                {
+                    Manager.SetNewState(Manager.State.Game);
+                }
+            }
 
             // Only check restart button if game is in progress
 
-            if (Play.GetText() == "Resume")
+            if (Play.Text == "Resume")
+            {
                 if (Restart.Check()) Manager.SetNewState(Manager.State.Game);
+            }
         }
 
         public static void Draw()
@@ -44,7 +65,7 @@ namespace TGP_Game.States
 
             Main.SpriteBatch.Draw(Main.Logo, new Rectangle(Main.Graphics.PreferredBackBufferWidth / 2 - 135, 20, 300, 120), Color.White);
 
-            // Draw every button
+            // Draw all buttons
 
             Play.Draw();
             Options.Draw();
@@ -53,7 +74,10 @@ namespace TGP_Game.States
 
             // Only draw Restart button if game is in progress
 
-            if (Play.GetText() == "Resume") Restart.Draw();
+            if (Play.Text == "Resume")
+            {
+                Restart.Draw();
+            }
         }
     }
 }

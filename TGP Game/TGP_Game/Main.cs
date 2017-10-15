@@ -27,11 +27,7 @@ namespace TGP_Game
         public static Texture2D Logo;
         public static Texture2D Menu;
 
-        public static SoundEffect ButtonSound;
-
-        // Volume variable (increments of 10%), set to 100% by default
-
-        public static int Volume = 10;                              
+        public static SoundEffect ButtonSound;                       
 
         // Public variables for changing things from static members
 
@@ -46,6 +42,10 @@ namespace TGP_Game
         
         protected override void Initialize()
         {
+            States.Options.Initialize();
+
+            Graphics.ToggleFullScreen();
+
             base.Initialize();
         }
 
@@ -88,7 +88,10 @@ namespace TGP_Game
 
             IsMouseVisible = SetMouseVisibility;
 
-            if (ExitGame) Exit();
+            if (ExitGame)
+            {
+                Exit();
+            }
 
             base.Update(gameTime);
         }

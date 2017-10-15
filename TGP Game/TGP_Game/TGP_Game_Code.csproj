@@ -81,6 +81,7 @@
     <Compile Include="States\About.cs" />
     <Compile Include="States\Manager.cs" />
     <Compile Include="States\Menu.cs" />
+    <Compile Include="States\Options.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

@@ -6,20 +6,16 @@ namespace TGP_Game.States
     {
         // Create and define Return button
 
-        private static Button Return = new Button("Return", Color.Cyan, new Vector2(0, 170));
-
-        private static void DrawText(Vector2 position, string text)
-        {
-            // Draw text at position relative to the middle of the screen with DefaultFont
-
-            Main.SpriteBatch.DrawString(Main.DefaultFont, text, new Vector2(Main.Graphics.PreferredBackBufferWidth / 2 - Main.DefaultFont.MeasureString(text).X / 2 + position.X, Main.Graphics.PreferredBackBufferHeight / 2 + position.Y), Color.White);
-        }
+        private static Button Return = new Button("Return", Color.Cyan, new Vector2(0, 180));
 
         public static void Update()
         {
-            // Check return button for a press and set state to Menu
+            // Check Return button for a press and set state to Menu
 
-            if (Return.Check()) Manager.SetNewState(Manager.State.Menu);
+            if (Return.Check())
+            {
+                Manager.SetNewState(Manager.State.Menu);
+            }
         }
 
         public static void Draw()
@@ -30,13 +26,13 @@ namespace TGP_Game.States
 
             // Draw 'about' text
 
-            DrawText(new Vector2(0, -200), "Version 0.01 (rework)");
-            DrawText(new Vector2(0, -120), "Developed by:");
-            DrawText(new Vector2(0, -90), "Tomas Zaluckij");
-            DrawText(new Vector2(0, -60), "(@Tomaszal)");
-            DrawText(new Vector2(0, 0), "Music: Torrey Desmond Rogers");
-            DrawText(new Vector2(0, 30), "Sound effects: SoundBible.com");
-            DrawText(new Vector2(0, 100), "Background: Wyatt S. Miles (flashpotatoes)");
+            Manager.DrawText(Color.White, new Vector2(0, -200), "Version 0.02 (rework)");
+            Manager.DrawText(Color.White, new Vector2(0, -120), "Developed by:");
+            Manager.DrawText(Color.White, new Vector2(0, -90), "Tomas Zaluckij");
+            Manager.DrawText(Color.White, new Vector2(0, -60), "(@Tomaszal)");
+            Manager.DrawText(Color.White, new Vector2(0, 0), "Music: Torrey Desmond Rogers");
+            Manager.DrawText(Color.White, new Vector2(0, 30), "Sound effects: SoundBible.com");
+            Manager.DrawText(Color.White, new Vector2(0, 100), "Background: Wyatt S. Miles (flashpotatoes)");
 
             // Draw Return button
 

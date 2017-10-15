@@ -5,7 +5,7 @@ namespace TGP_Game
 {
     class Button
     {
-        private string Text;
+        public string Text;
 
         private Color Current;
         private Color Normal;
@@ -14,20 +14,6 @@ namespace TGP_Game
         private Vector2 Position;
 
         private Rectangle ButtonRectangle;
-
-        public string GetText()
-        {
-            return Text;
-        }
-
-        public void SetText(string text)
-        {
-            // Set text value and calculate button position relative to the middle of the screen
-
-            Text = text;
-
-            ButtonRectangle = new Rectangle((int)(Main.Graphics.PreferredBackBufferWidth / 2 - Main.DefaultFont.MeasureString(Text).X / 2 + Position.X), (int)(Main.Graphics.PreferredBackBufferHeight / 2 + Position.Y), (int)(Main.DefaultFont.MeasureString(Text).X), (int)(Main.DefaultFont.MeasureString(Text).Y));
-        }
 
         public Button(string text, Color color, Vector2 position)
         {
@@ -40,39 +26,38 @@ namespace TGP_Game
             // Assign position relative to the middle of the screen and text
 
             Position = position;
-            SetText(text);
+            Text = text;
         }
 
         public bool Check()
         {
-            // Check if the button is pressed
-            
-            if (ButtonRectangle.Contains(Mouse.GetState().X, Mouse.GetState().Y))
+            // Calculate button position relative to the middle of the screen
+
+            ButtonRectangle = new Rectangle((int)(Main.Graphics.PreferredBackBufferWidth / 2 - Main.DefaultFont.MeasureString(Text).X / 2 + Position.X), (int)(Main.Graphics.PreferredBackBufferHeight / 2 + Position.Y), (int)(Main.DefaultFont.MeasureString(Text).X), (int)(Main.DefaultFont.MeasureString(Text).Y));
+
+            // If button is not pointed to set Current color to Normal and return false
+
+            if (!ButtonRectangle.Contains(Mouse.GetState().X, Mouse.GetState().Y))
             {
-                // If yes, set current color to hover
-
-                Current = Hover;
-
-                // If left mouse button has just been clicked, return true
-
-                if (Mouse.GetState().LeftButton == ButtonState.Pressed && !States.Manager.PreviousMouse1State)
-                {
-                    Main.ButtonSound.Play();
-                    return true;
-                }
-
-                // Otherwise return false, this prevents unwanted activation when holding down left mouse button
-
-                return false;
-            }
-            else
-            {
-                // If no, set Current color to Normal and return false
-
                 Current = Normal;
-
                 return false;
             }
+
+            // Set Current color to Hover
+
+            Current = Hover;
+
+            // If left mouse button is not pressed or has already been pressed return false
+
+            if (!(Mouse.GetState().LeftButton == ButtonState.Pressed) || States.Manager.PreviousMouse1State)
+            {
+                return false;
+            }
+            
+            // Play ButtonSound and return true;
+
+            Main.ButtonSound.Play();
+            return true;
         }
 
         public void Draw()
