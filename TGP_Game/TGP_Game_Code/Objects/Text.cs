@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace TGP_Game.States
+namespace TGP_Game_Code.States
 {
     public class Text
     {

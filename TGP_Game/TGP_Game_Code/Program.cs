@@ -1,4 +1,4 @@
-namespace TGP_Game
+namespace TGP_Game_Code
 {
 #if WINDOWS
     static class Program

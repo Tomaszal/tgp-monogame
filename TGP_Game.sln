@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TGP_Game_Code", "TGP Game\TGP_Game\TGP_Game_Code.csproj", "{BD590677-C86E-4FFA-8CEC-B0069BE698C8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TGP_Game_Code", "TGP_Game\TGP_Game_Code\TGP_Game_Code.csproj", "{BD590677-C86E-4FFA-8CEC-B0069BE698C8}"
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "TGP_Game_Content", "TGP Game\TGP_GameContent\TGP_Game_Content.contentproj", "{95E9B6E2-E791-4434-91F9-AA6956EA1817}"
+Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "TGP_Game_Content", "TGP_Game\TGP_Game_Content\TGP_Game_Content.contentproj", "{95E9B6E2-E791-4434-91F9-AA6956EA1817}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -3,8 +3,12 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
+using System.Collections.Generic;
 
-namespace TGP_Game
+// Debug command:
+// System.Diagnostics.Debug.WriteLine();
+
+namespace TGP_Game_Code
 {
     public class Main : Game
     {
@@ -13,7 +17,7 @@ namespace TGP_Game
 
         // States
 
-        private States.State[] States = new States.State[4];
+        private List<States.State> States = new List<States.State>();
 
         private static int CurrentStateIndex = 0;
         public static int NewStateIndex { private get; set; } = 0;
@@ -30,6 +34,8 @@ namespace TGP_Game
         public static Texture2D Blank;
         public static Texture2D Logo;
         public static Texture2D Menu;
+
+        public static Texture2D Entities;
 
         public static SoundEffect ButtonSound;
 
@@ -75,15 +81,22 @@ namespace TGP_Game
         {
             // Add states
 
-            States[0] = new States.Menu(this);
-            States[1] = new States.Options();
-            States[2] = new States.About();
-            States[3] = new States.Character();
+            // 0 - Main menu
+            // 1 - Options menu
+            // 2 - About menu
+            // 3 - Character selection menu
+            // 4 - Map handler (game state)
+
+            States.Add(new States.Menu(this));
+            States.Add(new States.Options());
+            States.Add(new States.About());
+            States.Add(new States.Character());
+            States.Add(new States.GameHandler());
 
             // Make mouse visible and toggle full screen
 
             IsMouseVisible = true;
-            Graphics.ToggleFullScreen();
+            //Graphics.ToggleFullScreen();
 
             base.Initialize();
         }
@@ -104,6 +117,8 @@ namespace TGP_Game
             Blank = Content.Load<Texture2D>("Textures/Blank");
             Logo = Content.Load<Texture2D>("Textures/Logo");
             Menu = Content.Load<Texture2D>("Textures/Menu");
+
+            Entities = Content.Load<Texture2D>("Textures/Entities");
 
             // Load sounds
 

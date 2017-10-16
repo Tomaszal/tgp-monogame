@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TGP_Game</RootNamespace>
-    <AssemblyName>TGP_Game</AssemblyName>
+    <RootNamespace>TGP_Game_Code</RootNamespace>
+    <AssemblyName>TGP_Game_Code</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <XnaFrameworkVersion>v4.0</XnaFrameworkVersion>
@@ -79,19 +79,23 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Map\Entity.cs" />
+    <Compile Include="Map\Map.cs" />
+    <Compile Include="Map\Player.cs" />
     <Compile Include="Objects\Button.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="States\About.cs" />
     <Compile Include="States\Character.cs" />
+    <Compile Include="States\GameHandler.cs" />
     <Compile Include="States\Menu.cs" />
     <Compile Include="States\Options.cs" />
     <Compile Include="States\State.cs" />
     <Compile Include="Objects\Text.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TGP_GameContent\TGP_Game_Content.contentproj">
+    <ProjectReference Include="..\TGP_Game_Content\TGP_Game_Content.contentproj">
       <Name>TGP_Game_Content</Name>
       <XnaReferenceType>Content</XnaReferenceType>
       <Project>{95E9B6E2-E791-4434-91F9-AA6956EA1817}</Project>

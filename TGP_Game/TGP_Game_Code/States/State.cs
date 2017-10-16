@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 
-namespace TGP_Game.States
+namespace TGP_Game_Code.States
 {
     public class State
     {

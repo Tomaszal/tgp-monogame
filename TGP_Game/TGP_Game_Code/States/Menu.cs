@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Linq;
 
-namespace TGP_Game.States
+namespace TGP_Game_Code.States
 {
     class Menu : State
     {

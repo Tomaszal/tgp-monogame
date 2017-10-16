@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-namespace TGP_Game.States
+namespace TGP_Game_Code.States
 {
     public class Button
     {

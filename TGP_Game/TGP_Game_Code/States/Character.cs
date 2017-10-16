@@ -1,10 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace TGP_Game.States
+namespace TGP_Game_Code.States
 {
     class Character : State
     {
-        private static int CharacterIndex = 3;
+        private static int CharacterIndex = 2;
+
+        private Map.Entity Preview;
 
         private class Next : Button
         {
@@ -14,7 +16,7 @@ namespace TGP_Game.States
             {
                 // Increace or reset CharacterIndex
 
-                CharacterIndex = (CharacterIndex == 4) ? 1 : CharacterIndex + 1;
+                CharacterIndex = (CharacterIndex == 3) ? 0 : CharacterIndex + 1;
 
                 base.Action();
             }
@@ -28,7 +30,7 @@ namespace TGP_Game.States
             {
                 // Decreace or reset CharacterIndex
 
-                CharacterIndex = (CharacterIndex == 1) ? 4 : CharacterIndex - 1;
+                CharacterIndex = (CharacterIndex == 0) ? 3 : CharacterIndex - 1;
 
                 base.Action();
             }
@@ -36,11 +38,13 @@ namespace TGP_Game.States
 
         private class Select : Button
         {
-            public Select(string text, Vector2 position, Color color) : base(text, position, color, -1) { }
-
+            public Select(string text, Vector2 position, Color color) : base(text, position, color, 4) { }
+            
             public override void Action()
             {
                 // Logic for selection
+
+                Map.Map.Initialize(CharacterIndex, new Vector2(50, 50));
 
                 base.Action();
             }
@@ -68,27 +72,37 @@ namespace TGP_Game.States
             // Add buttons
 
             Buttons.Add(new Next(">", new Vector2(50, 0), Color.PaleVioletRed));
-            Buttons.Add(new Previous("<", new Vector2(-50, 0), Color.PaleVioletRed));
+            Buttons.Add(new Previous("<", new Vector2(-54, 0), Color.PaleVioletRed));
             Buttons.Add(new Select("Select", new Vector2(0, 100), Color.PaleVioletRed));
             Buttons.Add(new Button("Return", new Vector2(0, 180), Color.White, 0));
+
+            // Add entity to preview the character
+
+            Preview = new Map.Entity(CharacterIndex, new Vector2(Main.Graphics.PreferredBackBufferWidth / 2 - 24, Main.Graphics.PreferredBackBufferHeight / 2 - 8));
+            Preview.MovementDirection = 'F';
         }
 
         public override void Update(GameTime gameTime)
         {
+            // Update character type index and set it to active
+
+            Preview.Active = true;
+            Preview.EntityTypeIndex = CharacterIndex;
+
             // Draw character specific description text
 
             switch (CharacterIndex)
             {
-                case 1:
+                case 0:
                     UpdateCharacterDescription(Color.GreenYellow, "Leaper", "Jumps very high, but runs very slow.", "Has 3 lifes.");
                     break;
-                case 2:
+                case 1:
                     UpdateCharacterDescription(Color.MediumSpringGreen, "Muller", "Runs very fast, but very jumps low.", "Has 3 lifes.");
                     break;
-                case 3:
+                case 2:
                     UpdateCharacterDescription(Color.MediumVioletRed, "Survivalist", "Jumps low and runs slow.", "Has 5 lifes.");
                     break;
-                case 4:
+                case 3:
                     UpdateCharacterDescription(Color.DodgerBlue, "Tryhard", "Jumps low and runs slow.", "Has 1 life.");
                     break;
             }
@@ -102,7 +116,9 @@ namespace TGP_Game.States
 
             DrawMenuBackground();
 
-            // WIP, draw character preview
+            // Draw character preview
+
+            Preview.Draw(gameTime);
 
             base.Draw(gameTime);
         }
