@@ -36,6 +36,7 @@ namespace TGP_Game_Code
         public static Texture2D Menu;
 
         public static Texture2D Entities;
+        public static Texture2D Tiles;
 
         public static SoundEffect ButtonSound;
 
@@ -119,6 +120,7 @@ namespace TGP_Game_Code
             Menu = Content.Load<Texture2D>("Textures/Menu");
 
             Entities = Content.Load<Texture2D>("Textures/Entities");
+            Tiles = Content.Load<Texture2D>("Textures/Tiles");
 
             // Load sounds
 

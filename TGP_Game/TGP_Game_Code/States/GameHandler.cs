@@ -6,12 +6,12 @@ namespace TGP_Game_Code.States
     {
         public override void Update(GameTime gameTime)
         {
-            Map.Map.Player.Update(gameTime);
+            Map.Map.Update(gameTime);
         }
 
         public override void Draw(GameTime gameTime)
         {
-            Map.Map.Player.Draw(gameTime);
+            Map.Map.Draw(gameTime);
         }
     }
 }
