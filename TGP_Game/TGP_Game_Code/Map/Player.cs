@@ -16,13 +16,13 @@ namespace TGP_Game_Code.Map
 
             if (Keyboard.GetState().IsKeyDown(Keys.D))
             {
-                Position.X += 10;
+                Position.X += 5;
                 MovementDirection = 'R';
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.A))
             {
-                Position.X -= 10;
+                Position.X -= 5;
                 MovementDirection = 'L';
             }
 
@@ -33,13 +33,13 @@ namespace TGP_Game_Code.Map
 
             if (Keyboard.GetState().IsKeyDown(Keys.S))
             {
-                Position.Y += 10;
+                Position.Y += 5;
                 MovementDirection = 'F';
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.W))
             {
-                Position.Y -= 10;
+                Position.Y -= 5;
                 MovementDirection = 'B';
             }
 

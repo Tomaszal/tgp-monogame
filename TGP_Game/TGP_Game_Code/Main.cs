@@ -161,7 +161,7 @@ namespace TGP_Game_Code
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            SpriteBatch.Begin();
+            SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
 
             // Draw current state
 

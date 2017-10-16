@@ -37,21 +37,20 @@ namespace TGP_Game_Code.Map
         {
             int x, y;
 
-            for (y = 0; y < 10; y++)
+            for (y = 0; y < 20; y++)
             {
                 TileMap.Add(new List<Tile>());
 
-                for (x = 0; x < 10; x++)
+                for (x = 0; x < 20; x++)
                 {
-                    TileMap[y].Add(DirtTile);
-                    //if (y < 10)
-                    //{
-                    //    TileMap[y].Add(AirTile);
-                    //}
-                    //else
-                    //{
-                    //    TileMap[y].Add(DirtTile);
-                    //}
+                    if (y < 10)
+                    {
+                        TileMap[y].Add(WaterBottomTile);
+                    }
+                    else
+                    {
+                        TileMap[y].Add(DarkStoneTile);
+                    }
                 }
             }
         }
@@ -80,9 +79,7 @@ namespace TGP_Game_Code.Map
 
                 foreach (Tile Tile in TileRow)
                 {
-                    //System.Diagnostics.Debug.WriteLine(X + ":" + Y);
-
-                    Main.SpriteBatch.Draw(Main.Tiles, new Rectangle(X * TileSizeDestination, Y * TileSizeDestination, (X + 1) * TileSizeDestination, (Y + 1) * TileSizeDestination), Tile.TexturePosition, Color.White);
+                    Main.SpriteBatch.Draw(Main.Tiles, new Rectangle(X * TileSizeDestination, Y * TileSizeDestination, TileSizeDestination, TileSizeDestination), Tile.TexturePosition, Color.White);
 
                     X++;
                 }

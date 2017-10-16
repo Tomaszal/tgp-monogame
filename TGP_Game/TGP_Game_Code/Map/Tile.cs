@@ -4,15 +4,15 @@ namespace TGP_Game_Code.Map
 {
     public class Tile
     {
-        public static Rectangle TexturePosition;
-        public static bool Collide = true;
+        public Rectangle TexturePosition;
+        public bool Collide = true;
     }
 
     public class AirTile : Tile
     {
         public AirTile()
         {
-            TexturePosition = new Rectangle(0 * 32, 0, Map.TileSizeSource, Map.TileSizeSource);
+            TexturePosition = new Rectangle(0 * Map.TileSizeSource, 0, Map.TileSizeSource, Map.TileSizeSource);
             Collide = false;
         }
     }
@@ -21,7 +21,7 @@ namespace TGP_Game_Code.Map
     {
         public DirtTile()
         {
-            TexturePosition = new Rectangle(1 * 32, 0, Map.TileSizeSource, Map.TileSizeSource);
+            TexturePosition = new Rectangle(1 * Map.TileSizeSource, 0, Map.TileSizeSource, Map.TileSizeSource);
         }
     }
 
@@ -29,7 +29,7 @@ namespace TGP_Game_Code.Map
     {
         public GrassTile()
         {
-            TexturePosition = new Rectangle(2 * 32, 0, Map.TileSizeSource, Map.TileSizeSource);
+            TexturePosition = new Rectangle(2 * Map.TileSizeSource, 0, Map.TileSizeSource, Map.TileSizeSource);
         }
     }
 
@@ -37,7 +37,7 @@ namespace TGP_Game_Code.Map
     {
         public WaterTopTile()
         {
-            TexturePosition = new Rectangle(3 * 32, 0, Map.TileSizeSource, Map.TileSizeSource);
+            TexturePosition = new Rectangle(3 * Map.TileSizeSource, 0, Map.TileSizeSource, Map.TileSizeSource);
         }
     }
 
@@ -45,7 +45,7 @@ namespace TGP_Game_Code.Map
     {
         public WaterBottomTile()
         {
-            TexturePosition = new Rectangle(4 * 32, 0, Map.TileSizeSource, Map.TileSizeSource);
+            TexturePosition = new Rectangle(4 * Map.TileSizeSource, 0, Map.TileSizeSource, Map.TileSizeSource);
         }
     }
 
@@ -53,7 +53,7 @@ namespace TGP_Game_Code.Map
     {
         public LightStoneTile()
         {
-            TexturePosition = new Rectangle(5 * 32, 0, Map.TileSizeSource, Map.TileSizeSource);
+            TexturePosition = new Rectangle(5 * Map.TileSizeSource, 0, Map.TileSizeSource, Map.TileSizeSource);
         }
     }
 
@@ -61,7 +61,7 @@ namespace TGP_Game_Code.Map
     {
         public WinTile()
         {
-            TexturePosition = new Rectangle(9 * 32, 0, Map.TileSizeSource, Map.TileSizeSource);
+            TexturePosition = new Rectangle(9 * Map.TileSizeSource, 0, Map.TileSizeSource, Map.TileSizeSource);
         }
     }
 
@@ -69,7 +69,7 @@ namespace TGP_Game_Code.Map
     {
         public DarkStoneTile()
         {
-            TexturePosition = new Rectangle(10 * 32, 0, Map.TileSizeSource, Map.TileSizeSource);
+            TexturePosition = new Rectangle(10 * Map.TileSizeSource, 0, Map.TileSizeSource, Map.TileSizeSource);
         }
     }
 }
