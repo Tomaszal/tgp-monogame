@@ -12,40 +12,29 @@ namespace TGP_Game_Code.Map
 
         public override void Update(GameTime gameTime)
         {
-            MovementDirection = 'N';
+            //MovementDirection = 'N';
 
-            if (Keyboard.GetState().IsKeyDown(Keys.D))
-            {
-                Position.X += 5;
-                MovementDirection = 'R';
-            }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.A))
-            {
-                Position.X -= 5;
-                MovementDirection = 'L';
-            }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.D) && Keyboard.GetState().IsKeyDown(Keys.A))
-            {
-                MovementDirection = 'N';
-            }
+            MoveRight = Keyboard.GetState().IsKeyDown(Keys.D);
+            MoveLeft = Keyboard.GetState().IsKeyDown(Keys.A);
 
             if (Keyboard.GetState().IsKeyDown(Keys.S))
             {
                 Position.Y += 5;
-                MovementDirection = 'F';
+                MoveDown = true;
+            }
+            else
+            {
+                MoveDown = false;
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.W))
             {
                 Position.Y -= 5;
-                MovementDirection = 'B';
+                MoveUp = true;
             }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.S) && Keyboard.GetState().IsKeyDown(Keys.W))
+            else
             {
-                MovementDirection = 'N';
+                MoveUp = false;
             }
 
             base.Update(gameTime);

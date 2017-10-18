@@ -14,8 +14,13 @@ namespace TGP_Game_Code.Map
         protected Rectangle Position;
         protected Rectangle TexturePosition = new Rectangle(0, 0, 32, 32);
 
-        public char MovementDirection = 'N';
+        public Vector2 Velocity = Vector2.Zero;
 
+        public float MaximumVelocity = 10f;
+        public float Acceleration = 0.035f;
+
+        public bool MoveUp, MoveDown, MoveLeft, MoveRight;
+        
         private bool IsActive()
         {
             // Escape method if entity is not active
@@ -52,6 +57,18 @@ namespace TGP_Game_Code.Map
             {
                 return;
             }
+
+            if ((MoveRight && !MoveLeft && Velocity.X < MaximumVelocity) || ((!MoveLeft || (MoveRight && MoveLeft)) && Velocity.X < 0))
+            {
+                Velocity.X += Acceleration * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+            }
+
+            if ((MoveLeft && !MoveRight && Velocity.X > - MaximumVelocity) || ((!MoveRight || (MoveRight && MoveLeft)) && Velocity.X > 0))
+            {
+                Velocity.X -= Acceleration * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+            }
+
+            Position.X += (int)Velocity.X;
         }
 
         public virtual void Draw(GameTime gameTime)
@@ -63,9 +80,9 @@ namespace TGP_Game_Code.Map
                 return;
             }
 
-            // Progress the animation if movement direction is not 'N'one
+            // Progress the animation if there is movement
 
-            if (MovementDirection != 'N')
+            if (MoveUp || MoveDown || MoveLeft || MoveRight)
             {
                 AnimationIndex = AnimationIndex + 0.005f * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             }
@@ -81,19 +98,21 @@ namespace TGP_Game_Code.Map
 
             TexturePosition.X = EntityTypeIndex * 96 + (int)Math.Floor(AnimationIndex) * 32;
 
-            TexturePosition.Y = 0;
-
-            switch (MovementDirection)
+            if (MoveLeft && !MoveRight)
             {
-                case 'L':
-                    TexturePosition.Y = 1;
-                    break;
-                case 'R':
-                    TexturePosition.Y = 2;
-                    break;
-                case 'B':
-                    TexturePosition.Y = 3;
-                    break;
+                TexturePosition.Y = 1;
+            }
+            else if (!MoveLeft && MoveRight)
+            {
+                TexturePosition.Y = 2;
+            }
+            else if (MoveUp && !MoveDown)
+            {
+                TexturePosition.Y = 3;
+            }
+            else
+            {
+                TexturePosition.Y = 0;
             }
 
             TexturePosition.Y *= 32;
@@ -101,7 +120,6 @@ namespace TGP_Game_Code.Map
             // Draw entity
 
             Main.SpriteBatch.Draw(Main.Entities, Position, TexturePosition, Color.White);
-
         }
     }
 }
