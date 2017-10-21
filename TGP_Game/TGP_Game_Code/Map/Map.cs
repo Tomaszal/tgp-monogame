@@ -35,24 +35,36 @@ namespace TGP_Game_Code.Map
 
         public static void GenerateTestMap()
         {
+            //Temporary map generation method
+
             int x, y;
 
             for (y = 0; y < 20; y++)
             {
                 TileMap.Add(new List<Tile>());
 
-                for (x = 0; x < 20; x++)
+                for (x = 0; x < 30; x++)
                 {
                     if (y < 10)
                     {
-                        TileMap[y].Add(WaterBottomTile);
+                        TileMap[y].Add(AirTile);
                     }
                     else
                     {
                         TileMap[y].Add(DarkStoneTile);
                     }
+
+                    if (x == 5 || x == 6) TileMap[y][x] = AirTile;
                 }
             }
+
+            TileMap[3][3] = LightStoneTile;
+            TileMap[3][4] = LightStoneTile;
+            TileMap[3][5] = LightStoneTile;
+
+            TileMap[4][3] = LightStoneTile;
+            TileMap[4][4] = LightStoneTile;
+            TileMap[4][5] = LightStoneTile;
         }
 
         public static void Initialize(int playerTypeIndex, Vector2 startingPlayerPosition)

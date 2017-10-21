@@ -13,14 +13,8 @@ namespace TGP_Game_Code.States
             {
                 // Set new state to character selection screen if no game is in progress, otherwise set new state back to game screen
 
-                if (Text == "Play")
-                {
-                    Main.NewStateIndex = 3;
-                }
-                else
-                {
-                    Main.NewStateIndex = 4;
-                }
+                if (Text == "Play") Main.NewStateIndex = 3;
+                else Main.NewStateIndex = 4;
 
                 base.Action();
             }
@@ -39,10 +33,7 @@ namespace TGP_Game_Code.States
             {
                 // Only check restart button if game is in progress (if it can be resumed)
 
-                if (Play.Text == "Resume")
-                {
-                    return base.Check();
-                }
+                if (Play.Text == "Resume") return base.Check();
 
                 return false;
             }
@@ -51,10 +42,7 @@ namespace TGP_Game_Code.States
             {
                 // Only check restart button if game is in progress (if it can be resumed)
 
-                if (Play.Text == "Resume")
-                {
-                    base.Draw();
-                }
+                if (Play.Text == "Resume") base.Draw();
             }
         }
 

@@ -129,7 +129,7 @@ namespace TGP_Game_Code
             // Load background music and set it to play it on repeat
 
             Song BackgroundMusic = Content.Load<Song>("Sounds/Background");
-            MediaPlayer.Play(BackgroundMusic);
+            //MediaPlayer.Play(BackgroundMusic);
             MediaPlayer.IsRepeating = true;
 
             base.LoadContent();

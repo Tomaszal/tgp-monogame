@@ -21,30 +21,18 @@ namespace TGP_Game_Code.States
         {
             // Check each button in list for a press and act accordingly
 
-            foreach (Button button in Buttons)
-            {
-                if(button.Check())
-                {
-                    button.Action();
-                }
-            }
+            foreach (Button button in Buttons) if (button.Check()) button.Action();
         }
 
         public virtual void Draw(GameTime gameTime)
         {
             // Draw each text in list
 
-            foreach (Text text in Texts)
-            {
-                text.Draw();
-            }
+            foreach (Text text in Texts) text.Draw();
 
             // Draw each button in list
 
-            foreach (Button button in Buttons)
-            {
-                button.Draw();
-            }
+            foreach (Button button in Buttons) button.Draw();
         }
     }
 }

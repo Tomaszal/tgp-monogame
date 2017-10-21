@@ -37,10 +37,7 @@ namespace TGP_Game_Code.States
         {
             // Escape method if StateIndex is -1
 
-            if (StateIndex == -1)
-            {
-                return;
-            }
+            if (StateIndex == -1) return;
 
             // Otherwise set new state to StateIndex
 
@@ -55,11 +52,8 @@ namespace TGP_Game_Code.States
 
             // If button is not pointed to set current color to normal and return false
 
-            if (!ButtonRectangle.Contains(Mouse.GetState().X, Mouse.GetState().Y))
-            {
-                Current = Normal;
-                return false;
-            }
+            Current = Normal;
+            if (!ButtonRectangle.Contains(Mouse.GetState().X, Mouse.GetState().Y)) return false;
 
             // Set current color to hover
 
@@ -67,11 +61,8 @@ namespace TGP_Game_Code.States
 
             // If left mouse button is not pressed or has already been pressed return false
 
-            if (!(Mouse.GetState().LeftButton == ButtonState.Pressed) || Main.PreviousLeftMouseButtonState)
-            {
-                return false;
-            }
-            
+            if (!(Mouse.GetState().LeftButton == ButtonState.Pressed) || Main.PreviousLeftMouseButtonState) return false;
+
             // Play button sound and return true;
 
             Main.ButtonSound.Play();

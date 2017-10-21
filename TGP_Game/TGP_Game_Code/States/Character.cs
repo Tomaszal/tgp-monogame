@@ -44,7 +44,7 @@ namespace TGP_Game_Code.States
             {
                 // Logic for selection
 
-                Map.Map.Initialize(CharacterIndex, new Vector2(50, 50));
+                Map.Map.Initialize(CharacterIndex, new Vector2(20, 20));
 
                 base.Action();
             }
@@ -86,7 +86,7 @@ namespace TGP_Game_Code.States
         {
             // Update character type index and set it to active
 
-            Preview.Active = true;
+            //Preview.Active = true;
             Preview.EntityTypeIndex = CharacterIndex;
             Preview.MoveDown = true;
 
