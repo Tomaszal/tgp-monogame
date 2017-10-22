@@ -13,10 +13,6 @@ namespace TGP_Game_Code.States
         private static int CurrentResolutionIndex;
         private static int MaxResolutionIndex = 6;
 
-        // Screen rectangle to check if object is on screen
-
-        public static Rectangle Screen;
-
         // Curent volume (increments of 10%), set to 100% by default
 
         private static int CurrentVolume = 10;
@@ -125,10 +121,6 @@ namespace TGP_Game_Code.States
                     Main.Graphics.PreferredBackBufferHeight = 1080;
                     break;
             }
-
-            // Update screen rectangle
-
-            Screen = new Rectangle(0, 0, Main.Graphics.PreferredBackBufferWidth, Main.Graphics.PreferredBackBufferHeight);
 
             Main.Graphics.ApplyChanges();
         }

@@ -35,6 +35,7 @@ namespace TGP_Game_Code
         public static Texture2D Blank;
         public static Texture2D Logo;
         public static Texture2D Menu;
+        public static Texture2D Background;
 
         public static Texture2D Entities;
         public static Texture2D Tiles;
@@ -119,6 +120,7 @@ namespace TGP_Game_Code
             Blank = Content.Load<Texture2D>("Textures/Blank");
             Logo = Content.Load<Texture2D>("Textures/Logo");
             Menu = Content.Load<Texture2D>("Textures/Menu");
+            Background = Content.Load<Texture2D>("Textures/Background");
 
             Entities = Content.Load<Texture2D>("Textures/Entities");
             Tiles = Content.Load<Texture2D>("Textures/Tiles");

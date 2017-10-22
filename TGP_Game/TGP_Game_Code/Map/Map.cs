@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -14,10 +15,15 @@ namespace TGP_Game_Code.Map
         public static Vector2 CameraCentre = Vector2.Zero;
         public static Vector2 CameraPosition = Vector2.Zero;
 
-        // Define tile destination and source rectangles
+        // Define tile source and tile destination rectangles
 
-        public static Rectangle TileDestinationRectangle = new Rectangle(32, 32, 32, 32);
         public static Rectangle TileSourceRectangle = new Rectangle(16, 0, 16, 16);
+        public static Rectangle TileDestinationRectangle = new Rectangle(32, 32, 32, 32);
+
+        // Create background assisting variables
+
+        public static float BackgroundRatio;
+        public static Rectangle BackgroundRectangle;
 
         // Create a static player
 
@@ -144,6 +150,17 @@ namespace TGP_Game_Code.Map
             // Dispose of map image texture
 
             MapImage.Dispose();
+
+            // Calculate background rectangle based on tile map size
+
+            CalculateBackgroundRectangle();
+        }
+
+        private static void CalculateBackgroundRectangle()
+        {
+            BackgroundRatio = MapSize.Y * TileDestinationRectangle.Height / Main.Background.Height;
+
+            BackgroundRectangle = new Rectangle(0 , 0, (int)(Main.Background.Width * BackgroundRatio), (int)(Main.Background.Height * BackgroundRatio));
         }
 
         public static void Update(GameTime gameTime)
@@ -159,17 +176,17 @@ namespace TGP_Game_Code.Map
             CameraCentre.X = Main.Graphics.PreferredBackBufferWidth * 0.5f;
             CameraCentre.Y = Main.Graphics.PreferredBackBufferHeight * 0.5f;
 
-            // Follow player on X axis if not near map borders, otherwise stick camera to borders
+            // Make camera position follow player on X axis if not near map borders, otherwise stick to theborders
 
             if (Player.Position.X > MapSize.X * TileDestinationRectangle.Width - CameraCentre.X) CameraPosition.X = CameraCentre.X * 2 - MapSize.X * TileDestinationRectangle.Width;
-            else if (Player.Position.X >= CameraCentre.X) CameraPosition.X = CameraCentre.X - Player.Position.X;
-            else CameraPosition.X = 0;
+            else if (Player.Position.X < CameraCentre.X) CameraPosition.X = 0;
+            else CameraPosition.X = CameraCentre.X - Player.Position.X;
 
-            // Follow player on Y axis if not near map borders, otherwise stick camera to borders
+            // Make camera position follow player on Y axis if not near map borders, otherwise stick to the borders
 
             if (Player.Position.Y > MapSize.Y * TileDestinationRectangle.Height - CameraCentre.Y) CameraPosition.Y = CameraCentre.Y * 2 - MapSize.Y * TileDestinationRectangle.Height;
-            else if (Player.Position.Y >= CameraCentre.Y) CameraPosition.Y = CameraCentre.Y - Player.Position.Y;
-            else CameraPosition.Y = 0;
+            else if (Player.Position.Y < CameraCentre.Y) CameraPosition.Y = 0;
+            else CameraPosition.Y = CameraCentre.Y - Player.Position.Y;
             
             // Create matrix translation for new camera position
 
@@ -178,6 +195,15 @@ namespace TGP_Game_Code.Map
 
         public static void Draw(GameTime gameTime)
         {
+            // Draw background with parallax effect
+            
+            for (X = 0; X < (int)(BackgroundRatio); X++)
+            {
+                BackgroundRectangle.X = X * BackgroundRectangle.Width + (int)(CameraPosition.X / 10);
+
+                Main.SpriteBatch.Draw(Main.Background, BackgroundRectangle, Color.White);
+            }
+            
             // Draw every tile of the tile map
 
             for (Y = 0; Y < MapSize.Y; Y++)

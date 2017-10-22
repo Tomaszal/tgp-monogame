@@ -5,8 +5,6 @@ namespace TGP_Game_Code.Map
 {
     public class Entity
     {
-        //public bool Active;
-
         // Animation
 
         public int EntityTypeIndex = 0;
@@ -77,26 +75,9 @@ namespace TGP_Game_Code.Map
         {
             return Acceleration * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
         }
-
-        private bool IsActive()
-        {
-            // Escape method if entity is not active
-
-            //if (!Active) return false;
-
-            // Escape method if entity is out of the bounds of the screen
-
-            //if (!States.Options.Screen.Contains(Position)) return false;
-
-            return true;
-        }
         
         public virtual void Update(GameTime gameTime)
         {
-            // Escape method if entity is not active
-
-            if (!IsActive()) return;
-
             // Calculate horizontal entity velocity
 
             if (MoveRight != MoveLeft)
@@ -134,10 +115,6 @@ namespace TGP_Game_Code.Map
 
         public virtual void Draw(GameTime gameTime)
         {
-            // Escape method if entity is not active
-
-            if (!IsActive()) return;
-
             // Progress the animation if there is movement
 
             if (MoveUp != MoveDown || MoveLeft != MoveRight) AnimationIndex = AnimationIndex + 0.005f * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
