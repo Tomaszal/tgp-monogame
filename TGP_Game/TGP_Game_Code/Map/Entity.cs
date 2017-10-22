@@ -86,7 +86,7 @@ namespace TGP_Game_Code.Map
 
             // Escape method if entity is out of the bounds of the screen
 
-            if (!States.Options.Screen.Contains(Position)) return false;
+            //if (!States.Options.Screen.Contains(Position)) return false;
 
             return true;
         }

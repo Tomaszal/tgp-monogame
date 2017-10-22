@@ -55,7 +55,7 @@ namespace TGP_Game_Code.States
 
             Line1Color = Color.MediumVioletRed;
 
-            VelocityLimit = 3f;
+            VelocityLimit = 10f;
             JumpHeightLimit = 11f;
             Lifes = 3;
         }

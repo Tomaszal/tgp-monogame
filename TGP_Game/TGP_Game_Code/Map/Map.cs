@@ -8,6 +8,12 @@ namespace TGP_Game_Code.Map
 {
     public static class Map
     {
+        // Camera that follows the player
+
+        public static Matrix CameraMatrix;
+        public static Vector2 CameraCentre = Vector2.Zero;
+        public static Vector2 CameraPosition = Vector2.Zero;
+
         // Define tile destination and source rectangles
 
         public static Rectangle TileDestinationRectangle = new Rectangle(32, 32, 32, 32);
@@ -57,7 +63,7 @@ namespace TGP_Game_Code.Map
 
             for (Y = 0; Y < (int)MapSize.Y; Y++)
             {
-                for (int X = 0; X < (int)MapSize.X; X++)
+                for (X = 0; X < (int)MapSize.X; X++)
                 {
                     // Set the map data array element to the color code of the tile element
 
@@ -145,6 +151,29 @@ namespace TGP_Game_Code.Map
             // Update the player
 
             Player.Update(gameTime);
+
+            // Update camera matrix
+
+            // Get screen centre
+
+            CameraCentre.X = Main.Graphics.PreferredBackBufferWidth * 0.5f;
+            CameraCentre.Y = Main.Graphics.PreferredBackBufferHeight * 0.5f;
+
+            // Follow player on X axis if not near map borders, otherwise stick camera to borders
+
+            if (Player.Position.X > MapSize.X * TileDestinationRectangle.Width - CameraCentre.X) CameraPosition.X = CameraCentre.X * 2 - MapSize.X * TileDestinationRectangle.Width;
+            else if (Player.Position.X >= CameraCentre.X) CameraPosition.X = CameraCentre.X - Player.Position.X;
+            else CameraPosition.X = 0;
+
+            // Follow player on Y axis if not near map borders, otherwise stick camera to borders
+
+            if (Player.Position.Y > MapSize.Y * TileDestinationRectangle.Height - CameraCentre.Y) CameraPosition.Y = CameraCentre.Y * 2 - MapSize.Y * TileDestinationRectangle.Height;
+            else if (Player.Position.Y >= CameraCentre.Y) CameraPosition.Y = CameraCentre.Y - Player.Position.Y;
+            else CameraPosition.Y = 0;
+            
+            // Create matrix translation for new camera position
+
+            CameraMatrix = Matrix.CreateTranslation(CameraPosition.X, CameraPosition.Y, 0f);
         }
 
         public static void Draw(GameTime gameTime)
