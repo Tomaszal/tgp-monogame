@@ -14,18 +14,27 @@ namespace TGP_Game_Code.Map
 
         public Rectangle Position = new Rectangle(0, 0, 48, 48);
         private Rectangle TexturePosition = new Rectangle(0, 0, 32, 32);
-        
+
         // Velocity and acceleration
 
-        public float Acceleration = 0.035f;
-        public float MaximumVelocity = 10f;
+        private float VerticalAcceleration = 0.09f;
+        private float MaximumVerticalVelocity = 10f;
+
+        public float HorizontalAcceleration = 0.035f;
+        public float MaximumHorizontalVelocity = 0f;
 
         public Vector2 Velocity = Vector2.Zero;
         private Rectangle VelocityPosition;
 
         // Movement
 
-        public bool MoveUp, MoveDown, MoveLeft, MoveRight;
+        public bool MoveUp, MoveDown, MoveLeft, MoveRight, Jump;
+
+        // Jumping
+
+        private bool IsJumping;
+        private float JumpingHeight;
+        public float MaximumJumpingHeight = 0f;
 
         // Collision
 
@@ -71,9 +80,13 @@ namespace TGP_Game_Code.Map
             return false;
         }
 
-        private float AccelerationDelta(GameTime gameTime)
+        private float AccelerationDelta(GameTime gameTime, char axis)
         {
-            return Acceleration * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+            if (axis == 'X') return HorizontalAcceleration * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+
+            if (axis == 'Y') return VerticalAcceleration * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+
+            return 0;
         }
         
         public virtual void Update(GameTime gameTime)
@@ -82,35 +95,64 @@ namespace TGP_Game_Code.Map
 
             if (MoveRight != MoveLeft)
             {
-                if (MoveRight && Velocity.X < MaximumVelocity) Velocity.X += AccelerationDelta(gameTime);
-                else if (Velocity.X > -MaximumVelocity) Velocity.X -= AccelerationDelta(gameTime);
+                if (MoveRight && Velocity.X < MaximumHorizontalVelocity) Velocity.X += AccelerationDelta(gameTime, 'X');
+                else if (Velocity.X > -MaximumHorizontalVelocity) Velocity.X -= AccelerationDelta(gameTime, 'X');
             }
             else
             {
-                if (Velocity.X < 0) Velocity.X += AccelerationDelta(gameTime);
-                else if (Velocity.X > 0) Velocity.X -= AccelerationDelta(gameTime);
+                if (Velocity.X < HorizontalAcceleration && Velocity.X > -HorizontalAcceleration) Velocity.X = 0f;
+                else if (Velocity.X < 0f) Velocity.X += AccelerationDelta(gameTime, 'X');
+                else if (Velocity.X > 0f) Velocity.X -= AccelerationDelta(gameTime, 'X');
             }
-
-            // Calculate vertical velocity (temporary)
-
-            if (MoveDown != MoveUp)
-            {
-                if (MoveDown && Velocity.Y < MaximumVelocity) Velocity.Y += AccelerationDelta(gameTime);
-                else if (Velocity.Y > -MaximumVelocity) Velocity.Y -= AccelerationDelta(gameTime);
-            }
-            else
-            {
-                if (Velocity.Y < 0) Velocity.Y += AccelerationDelta(gameTime);
-                else if (Velocity.Y > 0) Velocity.Y -= AccelerationDelta(gameTime);
-            }
-
-            // Check for collision and act accordingly
-
-            if (CheckCollision('Y')) Velocity.Y = 0;
-            else Position.Y += (int)Velocity.Y;
 
             if (CheckCollision('X')) Velocity.X = 0;
             else Position.X += (int)Velocity.X;
+
+            // Calculate vertical velocity (temporary)
+
+            if (!IsJumping)
+            {
+                if (Velocity.Y < MaximumVerticalVelocity) Velocity.Y += AccelerationDelta(gameTime, 'Y') / 2;
+                
+                if (CheckCollision('Y'))
+                {
+                    Velocity.Y = 0f;
+                    if (Jump) IsJumping = true;
+                }
+                else Position.Y += (int)Velocity.Y;
+            }
+            else
+            {
+                if (Velocity.Y > -MaximumVerticalVelocity) Velocity.Y -= AccelerationDelta(gameTime, 'Y');
+
+                if (CheckCollision('Y') || !Jump || -JumpingHeight >= MaximumJumpingHeight * Map.TileDestinationRectangle.Height)
+                {
+                    Velocity.Y = 0f;
+                    JumpingHeight = 0f;
+                    IsJumping = false;
+                }
+                else
+                {
+                    Position.Y += (int)Velocity.Y;
+                    JumpingHeight += Velocity.Y;
+                }
+            }
+
+            //if (MoveDown != MoveUp)
+            //{
+            //    if (MoveDown && Velocity.Y < MaximumVerticalVelocity) Velocity.Y += AccelerationDelta(gameTime, 'Y');
+            //    else if (Velocity.Y > -MaximumVerticalVelocity) Velocity.Y -= AccelerationDelta(gameTime, 'Y');
+            //}
+            //else
+            //{
+            //    if (Velocity.Y < VerticalAcceleration && Velocity.Y > -VerticalAcceleration) Velocity.Y = 0f;
+            //    else if (Velocity.Y < 0) Velocity.Y += AccelerationDelta(gameTime, 'Y');
+            //    else if (Velocity.Y > 0) Velocity.Y -= AccelerationDelta(gameTime, 'Y');
+            //}
+
+            //System.Diagnostics.Debug.WriteLine(Velocity.Y);
+
+            // Check for collision and act accordingly
         }
 
         public virtual void Draw(GameTime gameTime)

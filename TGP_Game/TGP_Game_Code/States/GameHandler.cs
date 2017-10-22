@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using System;
 
 namespace TGP_Game_Code.States
@@ -8,6 +9,8 @@ namespace TGP_Game_Code.States
         public override void Update(GameTime gameTime)
         {
             Map.Map.Update(gameTime);
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape)) Main.NewStateIndex = 0;
         }
 
         public override void Draw(GameTime gameTime)

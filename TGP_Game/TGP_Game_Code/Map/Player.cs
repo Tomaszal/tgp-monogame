@@ -12,6 +12,8 @@ namespace TGP_Game_Code.Map
             MoveUp = Keyboard.GetState().IsKeyDown(Keys.W);
             MoveDown = Keyboard.GetState().IsKeyDown(Keys.S);
 
+            Jump = Keyboard.GetState().IsKeyDown(Keys.Space);
+
             base.Update(gameTime);
         }
     }

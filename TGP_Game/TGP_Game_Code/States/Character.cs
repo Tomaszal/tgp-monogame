@@ -23,8 +23,8 @@ namespace TGP_Game_Code.States
 
             Line1Color = Color.GreenYellow;
 
-            VelocityLimit = 2f;
-            JumpHeightLimit = 15f;
+            VelocityLimit = 4f;
+            JumpHeightLimit = 5f;
             Lifes = 3;
         }
     }
@@ -39,8 +39,8 @@ namespace TGP_Game_Code.States
 
             Line1Color = Color.MediumSpringGreen;
 
-            VelocityLimit = 4f;
-            JumpHeightLimit = 10f;
+            VelocityLimit = 9f;
+            JumpHeightLimit = 3.5f;
             Lifes = 3;
         }
     }
@@ -55,8 +55,8 @@ namespace TGP_Game_Code.States
 
             Line1Color = Color.MediumVioletRed;
 
-            VelocityLimit = 10f;
-            JumpHeightLimit = 11f;
+            VelocityLimit = 6f;
+            JumpHeightLimit = 4.5f;
             Lifes = 3;
         }
     }
@@ -71,9 +71,9 @@ namespace TGP_Game_Code.States
 
             Line1Color = Color.DodgerBlue;
 
-            VelocityLimit = 3f;
-            JumpHeightLimit = 11f;
-            Lifes = 3;
+            VelocityLimit = 6f;
+            JumpHeightLimit = 4.5f;
+            Lifes = 1;
         }
     }
 
@@ -128,7 +128,8 @@ namespace TGP_Game_Code.States
                 // Logic for selection
 
                 Map.Map.Player.EntityTypeIndex = CharacterIndex;
-                Map.Map.Player.MaximumVelocity = CharacterTypes[CharacterIndex].VelocityLimit;
+                Map.Map.Player.MaximumHorizontalVelocity = CharacterTypes[CharacterIndex].VelocityLimit;
+                Map.Map.Player.MaximumJumpingHeight = CharacterTypes[CharacterIndex].JumpHeightLimit;
 
                 base.Action();
             }
