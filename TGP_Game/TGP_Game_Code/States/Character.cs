@@ -1,12 +1,95 @@
 ﻿using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 
 namespace TGP_Game_Code.States
 {
+    // Character type classes
+
+    public class CharacterType
+    {
+        public string Line1, Line2, Line3;
+        public Color Line1Color;
+        public float VelocityLimit, JumpHeightLimit;
+        public int Lifes;
+    }
+
+    public class Leaper : CharacterType
+    {
+        public Leaper()
+        {
+            Line1 = "Leaper";
+            Line2 = "Jumps very high, but runs very slow.";
+            Line3 = "Has 3 lifes.";
+
+            Line1Color = Color.GreenYellow;
+
+            VelocityLimit = 2f;
+            JumpHeightLimit = 15f;
+            Lifes = 3;
+        }
+    }
+
+    public class Muller : CharacterType
+    {
+        public Muller()
+        {
+            Line1 = "Muller";
+            Line2 = "Runs very fast, but very jumps low.";
+            Line3 = "Has 3 lifes.";
+
+            Line1Color = Color.MediumSpringGreen;
+
+            VelocityLimit = 4f;
+            JumpHeightLimit = 10f;
+            Lifes = 3;
+        }
+    }
+
+    public class Survivalist : CharacterType
+    {
+        public Survivalist()
+        {
+            Line1 = "Survivalist";
+            Line2 = "Does not jump high or run fast.";
+            Line3 = "Has 5 lifes.";
+
+            Line1Color = Color.MediumVioletRed;
+
+            VelocityLimit = 3f;
+            JumpHeightLimit = 11f;
+            Lifes = 3;
+        }
+    }
+
+    public class Tryhard : CharacterType
+    {
+        public Tryhard()
+        {
+            Line1 = "Tryhard";
+            Line2 = "Does not jump high or run fast.";
+            Line3 = "Has 1 life.";
+
+            Line1Color = Color.DodgerBlue;
+
+            VelocityLimit = 3f;
+            JumpHeightLimit = 11f;
+            Lifes = 3;
+        }
+    }
+
     class Character : State
     {
+        // List of character types
+
+        private static List<CharacterType> CharacterTypes = new List<CharacterType>() { new Leaper(), new Muller(), new Survivalist(), new Tryhard() };
+
+        // Character index in character type list (also matches their position in texture)
+
         private static int CharacterIndex = 2;
 
-        private Map.Entity Preview;
+        // Character preview entity
+
+        private static Map.Entity Preview = new Map.Entity();
 
         private class Next : Button
         {
@@ -39,29 +122,18 @@ namespace TGP_Game_Code.States
         private class Select : Button
         {
             public Select(string text, Vector2 position, Color color) : base(text, position, color, 4) { }
-            
+
             public override void Action()
             {
                 // Logic for selection
 
-                //Map.Map.Initialize(CharacterIndex, new Vector2(20, 20));
-
                 Map.Map.Player.EntityTypeIndex = CharacterIndex;
+                Map.Map.Player.MaximumVelocity = CharacterTypes[CharacterIndex].VelocityLimit;
 
                 base.Action();
             }
         }
-
-        private void UpdateCharacterDescription(Color color, string line1, string line2, string line3)
-        {
-            // Update texts with provided character description and color
-
-            Texts[1].TextString = line1;
-            Texts[1].Color = color;
-            Texts[2].TextString = line2;
-            Texts[3].TextString = line3;
-        }
-
+        
         public Character()
         {
             // Add texts
@@ -77,41 +149,23 @@ namespace TGP_Game_Code.States
             Buttons.Add(new Previous("<", new Vector2(-54, 0), Color.PaleVioletRed));
             Buttons.Add(new Select("Select", new Vector2(0, 100), Color.PaleVioletRed));
             Buttons.Add(new Button("Return", new Vector2(0, 180), Color.White, 0));
-
-            // Add entity to preview the character
-
-            //Preview = new Map.Entity(CharacterIndex, new Vector2(Main.Graphics.PreferredBackBufferWidth / 2 - 24, Main.Graphics.PreferredBackBufferHeight / 2 - 8));
-            //Preview.MovementDirection = 'F';
-
-            Preview = new Map.Entity();
         }
 
         public override void Update(GameTime gameTime)
         {
-            // Update character type index and set it to active
-
-            //Preview.Active = true;
+            // Update character preview entity
+            
             Preview.EntityTypeIndex = CharacterIndex;
             Preview.Position.Location = new Point(Main.Graphics.PreferredBackBufferWidth / 2 - 24, Main.Graphics.PreferredBackBufferHeight / 2 - 8);
             Preview.MoveDown = true;
 
-            // Draw character specific description text
+            // Update character specific description text
 
-            switch (CharacterIndex)
-            {
-                case 0:
-                    UpdateCharacterDescription(Color.GreenYellow, "Leaper", "Jumps very high, but runs very slow.", "Has 3 lifes.");
-                    break;
-                case 1:
-                    UpdateCharacterDescription(Color.MediumSpringGreen, "Muller", "Runs very fast, but very jumps low.", "Has 3 lifes.");
-                    break;
-                case 2:
-                    UpdateCharacterDescription(Color.MediumVioletRed, "Survivalist", "Jumps low and runs slow.", "Has 5 lifes.");
-                    break;
-                case 3:
-                    UpdateCharacterDescription(Color.DodgerBlue, "Tryhard", "Jumps low and runs slow.", "Has 1 life.");
-                    break;
-            }
+            Texts[1].TextString = CharacterTypes[CharacterIndex].Line1;
+            Texts[2].TextString = CharacterTypes[CharacterIndex].Line2;
+            Texts[3].TextString = CharacterTypes[CharacterIndex].Line3;
+
+            Texts[1].Color = CharacterTypes[CharacterIndex].Line1Color;
 
             base.Update(gameTime);
         }
