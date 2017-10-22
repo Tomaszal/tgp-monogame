@@ -2,18 +2,22 @@
 
 namespace TGP_Game_Code.Map
 {
+    // Tile and derived tile type classes
+
     public class Tile
     {
-        public Rectangle TexturePosition;
+        public Rectangle TexturePosition = Map.TileSourceRectangle;
         public bool Collide = true;
+        public Color ColorCode = new Color(0, 0, 0);
     }
 
     public class AirTile : Tile
     {
         public AirTile()
         {
-            TexturePosition = new Rectangle(0 * Map.TileSizeSource, 0, Map.TileSizeSource, Map.TileSizeSource);
+            TexturePosition.X *= 0;
             Collide = false;
+            ColorCode = new Color(255, 255, 255);
         }
     }
 
@@ -21,7 +25,8 @@ namespace TGP_Game_Code.Map
     {
         public DirtTile()
         {
-            TexturePosition = new Rectangle(1 * Map.TileSizeSource, 0, Map.TileSizeSource, Map.TileSizeSource);
+            TexturePosition.X *= 1;
+            ColorCode = new Color(150, 120, 90);
         }
     }
 
@@ -29,7 +34,8 @@ namespace TGP_Game_Code.Map
     {
         public GrassTile()
         {
-            TexturePosition = new Rectangle(2 * Map.TileSizeSource, 0, Map.TileSizeSource, Map.TileSizeSource);
+            TexturePosition.X *= 2;
+            ColorCode = new Color(0, 120, 0);
         }
     }
 
@@ -37,7 +43,8 @@ namespace TGP_Game_Code.Map
     {
         public WaterTopTile()
         {
-            TexturePosition = new Rectangle(3 * Map.TileSizeSource, 0, Map.TileSizeSource, Map.TileSizeSource);
+            TexturePosition.X *= 3;
+            ColorCode = new Color(70, 120, 180);
         }
     }
 
@@ -45,7 +52,8 @@ namespace TGP_Game_Code.Map
     {
         public WaterBottomTile()
         {
-            TexturePosition = new Rectangle(4 * Map.TileSizeSource, 0, Map.TileSizeSource, Map.TileSizeSource);
+            TexturePosition.X *= 4;
+            ColorCode = new Color(70, 120, 120);
         }
     }
 
@@ -53,7 +61,8 @@ namespace TGP_Game_Code.Map
     {
         public LightStoneTile()
         {
-            TexturePosition = new Rectangle(5 * Map.TileSizeSource, 0, Map.TileSizeSource, Map.TileSizeSource);
+            TexturePosition.X *= 5;
+            ColorCode = new Color(140, 140, 140);
         }
     }
 
@@ -61,7 +70,8 @@ namespace TGP_Game_Code.Map
     {
         public WinTile()
         {
-            TexturePosition = new Rectangle(9 * Map.TileSizeSource, 0, Map.TileSizeSource, Map.TileSizeSource);
+            TexturePosition.X *= 6;
+            ColorCode = new Color(255, 255, 0);
         }
     }
 
@@ -69,7 +79,16 @@ namespace TGP_Game_Code.Map
     {
         public DarkStoneTile()
         {
-            TexturePosition = new Rectangle(10 * Map.TileSizeSource, 0, Map.TileSizeSource, Map.TileSizeSource);
+            TexturePosition.X *= 7;
+            ColorCode = new Color(60, 30, 40);
+        }
+    }
+
+    public class NullTile : Tile
+    {
+        public NullTile()
+        {
+            TexturePosition.X *= 8;
         }
     }
 }

@@ -44,7 +44,9 @@ namespace TGP_Game_Code.States
             {
                 // Logic for selection
 
-                Map.Map.Initialize(CharacterIndex, new Vector2(20, 20));
+                //Map.Map.Initialize(CharacterIndex, new Vector2(20, 20));
+
+                Map.Map.Player.EntityTypeIndex = CharacterIndex;
 
                 base.Action();
             }
@@ -78,8 +80,10 @@ namespace TGP_Game_Code.States
 
             // Add entity to preview the character
 
-            Preview = new Map.Entity(CharacterIndex, new Vector2(Main.Graphics.PreferredBackBufferWidth / 2 - 24, Main.Graphics.PreferredBackBufferHeight / 2 - 8));
+            //Preview = new Map.Entity(CharacterIndex, new Vector2(Main.Graphics.PreferredBackBufferWidth / 2 - 24, Main.Graphics.PreferredBackBufferHeight / 2 - 8));
             //Preview.MovementDirection = 'F';
+
+            Preview = new Map.Entity();
         }
 
         public override void Update(GameTime gameTime)
@@ -88,6 +92,7 @@ namespace TGP_Game_Code.States
 
             //Preview.Active = true;
             Preview.EntityTypeIndex = CharacterIndex;
+            Preview.Position.Location = new Point(Main.Graphics.PreferredBackBufferWidth / 2 - 24, Main.Graphics.PreferredBackBufferHeight / 2 - 8);
             Preview.MoveDown = true;
 
             // Draw character specific description text

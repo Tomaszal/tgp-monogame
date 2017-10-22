@@ -1,22 +1,26 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
+using System.IO;
 
 namespace TGP_Game_Code.Map
 {
     public static class Map
     {
-        // Define tile sizes
+        // Define tile destination and source rectangles
 
-        public static int TileSizeDestination = 32;
-        public static int TileSizeSource = 16;
+        public static Rectangle TileDestinationRectangle = new Rectangle(32, 32, 32, 32);
+        public static Rectangle TileSourceRectangle = new Rectangle(16, 0, 16, 16);
 
         // Create a static player
 
-        public static Entity Player;
+        public static Entity Player = new Player();
 
         // Create a static map
 
         public static List<List<Tile>> TileMap = new List<List<Tile>>();
+        public static Vector2 MapSize;
 
         // Create and define all tile types
 
@@ -28,76 +32,141 @@ namespace TGP_Game_Code.Map
         public static Tile LightStoneTile = new LightStoneTile();
         public static Tile DarkStoneTile = new DarkStoneTile();
         public static Tile WinTile = new WinTile();
+        public static Tile NullTile = new NullTile();
 
-        // Variables for counting foreach cycles
+        private static List<Tile> TileTypes = new List<Tile> { AirTile, DirtTile, GrassTile, WaterTopTile, WaterBottomTile, LightStoneTile, DarkStoneTile, WinTile };
+
+        // Others
 
         private static int X, Y;
+        private static uint PackedValueDelta;
 
-        public static void GenerateTestMap()
+        public static void SaveMap(GraphicsDevice graphicsDevice, string mapName)
         {
-            //Temporary map generation method
+            // Method to save the tile map to the specified .png file
 
-            int x, y;
+            // Create a blank map image texture with the size of the tile map
 
-            for (y = 0; y < 20; y++)
+            Texture2D MapImage = new Texture2D(graphicsDevice, (int)MapSize.X, (int)MapSize.Y);
+
+            // Create a blank map data array with the size of the tile map
+
+            Color[] MapData = new Color[(int)(MapSize.X * MapSize.Y)];
+
+            // Convert tile map to map data array
+
+            for (Y = 0; Y < (int)MapSize.Y; Y++)
             {
-                TileMap.Add(new List<Tile>());
-
-                for (x = 0; x < 30; x++)
+                for (int X = 0; X < (int)MapSize.X; X++)
                 {
-                    if (y < 10)
-                    {
-                        TileMap[y].Add(AirTile);
-                    }
-                    else
-                    {
-                        TileMap[y].Add(DarkStoneTile);
-                    }
+                    // Set the map data array element to the color code of the tile element
 
-                    if (x == 5 || x == 6) TileMap[y][x] = AirTile;
+                    MapData[Y * (int)MapSize.X + X] = TileMap[Y][X].ColorCode;
                 }
             }
 
-            TileMap[3][3] = LightStoneTile;
-            TileMap[3][4] = LightStoneTile;
-            TileMap[3][5] = LightStoneTile;
+            // Set map image texture to map data array
 
-            TileMap[4][3] = LightStoneTile;
-            TileMap[4][4] = LightStoneTile;
-            TileMap[4][5] = LightStoneTile;
+            MapImage.SetData(MapData);
+
+            // Open stream and save the specified .png file
+
+            Stream Stream = File.Create(mapName + ".png");
+            MapImage.SaveAsPng(Stream, (int)MapSize.X, (int)MapSize.Y);
+
+            // Dispose of the stream and map image texture
+
+            Stream.Dispose();
+            MapImage.Dispose();
         }
-
-        public static void Initialize(int playerTypeIndex, Vector2 startingPlayerPosition)
+        
+        public static void LoadMap(ContentManager contentManager, string mapName)
         {
-            // Define a static player
+            // Method to load the tile map from the specified .png file
 
-            Player = new Player(playerTypeIndex, startingPlayerPosition);
+            // Load map image texture
 
-            GenerateTestMap();
+            Texture2D MapImage = contentManager.Load<Texture2D>(mapName);
+
+            // Set tile map size
+
+            MapSize = new Vector2(MapImage.Width, MapImage.Height);
+
+            // Get map data array from map image texture
+
+            Color[] MapData = new Color[(int)(MapSize.X * MapSize.Y)];
+            MapImage.GetData(MapData);
+
+            // Convert map data into tile map
+
+            for (Y = 0; Y < (int)MapSize.Y; Y++)
+            {
+                // Add a row of tiles to tile map
+
+                TileMap.Add(new List<Tile>());
+
+                for (X = 0; X < (int)MapSize.X; X++)
+                {
+                    // Add individual tiles
+
+                    foreach (Tile Tile in TileTypes)
+                    {
+                        // Calculate packed value delta of colors in map data and different tile types
+
+                        PackedValueDelta = Tile.ColorCode.PackedValue - MapData[Y * (int)MapSize.X + X].PackedValue;
+                        
+                        if (PackedValueDelta <= 10)
+                        {
+                            // Add tile of matched type
+
+                            TileMap[Y].Add(Tile);
+
+                            // Set player position if delta is 1
+
+                            if (PackedValueDelta == 1) Player.Position.Location = new Point(X * TileDestinationRectangle.Width, Y * TileDestinationRectangle.Height);
+
+                            break;
+                        }
+                    }
+
+                    // Add a null tile if no tile type matches
+
+                    if (TileMap[Y].Count != X + 1) TileMap[Y].Add(NullTile);
+                }
+            }
+
+            // Dispose of map image texture
+
+            MapImage.Dispose();
         }
 
         public static void Update(GameTime gameTime)
         {
+            // Update the player
+
             Player.Update(gameTime);
         }
 
         public static void Draw(GameTime gameTime)
         {
-            Y = 0;
+            // Draw every tile of the tile map
 
-            foreach (List<Tile> TileRow in TileMap)
+            for (Y = 0; Y < MapSize.Y; Y++)
             {
-                X = 0;
-
-                foreach (Tile Tile in TileRow)
+                for (X = 0; X < MapSize.X; X++)
                 {
-                    Main.SpriteBatch.Draw(Main.Tiles, new Rectangle(X * TileSizeDestination, Y * TileSizeDestination, TileSizeDestination, TileSizeDestination), Tile.TexturePosition, Color.White);
+                    // Calculate destination rectangle
 
-                    X++;
+                    TileDestinationRectangle.X = TileDestinationRectangle.Width * X;
+                    TileDestinationRectangle.Y = TileDestinationRectangle.Height * Y;
+
+                    // Draw the tile with appropriate texture
+
+                    Main.SpriteBatch.Draw(Main.Tiles, TileDestinationRectangle, TileMap[Y][X].TexturePosition, Color.White);
                 }
-
-                Y++;
             }
+
+            // Draw player
 
             Player.Draw(gameTime);
         }

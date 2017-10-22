@@ -5,8 +5,6 @@ namespace TGP_Game_Code.Map
 {
     public class Player : Entity
     {
-        public Player(int playerTypeIndex, Vector2 position) : base(playerTypeIndex, position) { }
-
         public override void Update(GameTime gameTime)
         {
             MoveRight = Keyboard.GetState().IsKeyDown(Keys.D);

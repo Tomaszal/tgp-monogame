@@ -7,26 +7,36 @@ namespace TGP_Game_Code.Map
     {
         //public bool Active;
 
-        public int EntityTypeIndex { private get; set; } = 0;
+        // Animation
+
+        public int EntityTypeIndex = 0;
         private float AnimationIndex = 0f;
 
-        protected Rectangle Position;
-        protected Rectangle TexturePosition = new Rectangle(0, 0, 32, 32);
+        // Position
+
+        public Rectangle Position = new Rectangle(0, 0, 48, 48);
+        private Rectangle TexturePosition = new Rectangle(0, 0, 32, 32);
+        
+        // Velocity and acceleration
+
+        public float Acceleration = 0.035f;
+        public float MaximumVelocity = 10f;
 
         public Vector2 Velocity = Vector2.Zero;
+        private Rectangle VelocityPosition;
 
-        public float MaximumVelocity = 10f;
-        public float Acceleration = 0.035f;
+        // Movement
 
         public bool MoveUp, MoveDown, MoveLeft, MoveRight;
-        
+
+        // Collision
+
         private int TopTile, BottomTile, LeftTile, RightTile;
-        private int i, j;
-        private Rectangle VelocityPosition;
+        private int X, Y;
 
         private bool CheckCollision(char Axis)
         {
-            // Method checks if there is a collision on certain axis after adding veolicty
+            // Function checks if there is a collision on certain axis after adding veolicty
 
             // Calculate position after adding velocity to certain axis
 
@@ -36,10 +46,10 @@ namespace TGP_Game_Code.Map
 
             // Calculate corner tiles that the entity is touching
 
-            TopTile = (int)Math.Floor((float)VelocityPosition.Top / Map.TileSizeDestination);
-            BottomTile = (int)Math.Floor((float)VelocityPosition.Bottom / Map.TileSizeDestination);
-            LeftTile = (int)Math.Floor((float)VelocityPosition.Left / Map.TileSizeDestination);
-            RightTile = (int)Math.Floor((float)VelocityPosition.Right / Map.TileSizeDestination);
+            TopTile = (int)Math.Floor((float)VelocityPosition.Top / Map.TileDestinationRectangle.Height);
+            BottomTile = (int)Math.Floor((float)VelocityPosition.Bottom / Map.TileDestinationRectangle.Height);
+            LeftTile = (int)Math.Floor((float)VelocityPosition.Left / Map.TileDestinationRectangle.Width);
+            RightTile = (int)Math.Floor((float)VelocityPosition.Right / Map.TileDestinationRectangle.Width);
             
             // Return true if the position is out of bounds of the tile map
 
@@ -50,11 +60,11 @@ namespace TGP_Game_Code.Map
 
             // Check for collision with surrounding tiles on tile map
 
-            for (i = LeftTile; i <= RightTile; i++)
+            for (Y = TopTile; Y <= BottomTile; Y++)
             {
-                for (j = TopTile; j <= BottomTile; j++)
+                for (X = LeftTile; X <= RightTile; X++)
                 {
-                    if (Map.TileMap[j][i].Collide) return true;
+                    if (Map.TileMap[Y][X].Collide) return true;
                 }
             }
 
@@ -80,16 +90,7 @@ namespace TGP_Game_Code.Map
 
             return true;
         }
-
-        public Entity(int entityTypeIndex, Vector2 position)
-        {
-            // Set all values
-
-            EntityTypeIndex = entityTypeIndex;
-            Position = new Rectangle((int)position.X, (int)position.Y, 48, 48);
-            //Active = true;
-        }
-
+        
         public virtual void Update(GameTime gameTime)
         {
             // Escape method if entity is not active

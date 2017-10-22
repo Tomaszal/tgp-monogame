@@ -132,6 +132,10 @@ namespace TGP_Game_Code
             //MediaPlayer.Play(BackgroundMusic);
             MediaPlayer.IsRepeating = true;
 
+            // Load map
+
+            Map.Map.LoadMap(Content, "Map");
+
             base.LoadContent();
         }
 
