@@ -5,6 +5,8 @@ namespace TGP_Game_Code.Map
 {
     public class Entity
     {
+        public bool Active = true;
+
         // Animation
 
         public int EntityTypeIndex = 0;
@@ -26,6 +28,8 @@ namespace TGP_Game_Code.Map
 
         public Vector2 Velocity = Vector2.Zero;
         public Rectangle VelocityPosition;
+
+        protected bool MovedDownDuringLastUpdate;
 
         // Movement
 
@@ -84,6 +88,8 @@ namespace TGP_Game_Code.Map
 
         private float AccelerationDelta(GameTime gameTime, char axis)
         {
+            // Calculate acceleration of chosen axis
+
             if (axis == 'X') return HorizontalAcceleration * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 
             if (axis == 'Y') return VerticalAcceleration * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
@@ -99,10 +105,14 @@ namespace TGP_Game_Code.Map
         {
             StartingPosition = startingPosition;
             Position.Location = startingPosition;
+
+            Active = true;
         }
 
         public virtual void Update(GameTime gameTime)
         {
+            if (!Active) return;
+
             // Calculate horizontal entity velocity
 
             if (MoveRight != MoveLeft)
@@ -133,6 +143,8 @@ namespace TGP_Game_Code.Map
 
             // Calculate vertical velocity and jumping mechanics
 
+            MovedDownDuringLastUpdate = false;
+
             if (!IsJumping)
             {
                 // Accelerate entity's fall if it is not jumping and velocity is not maximum
@@ -140,18 +152,23 @@ namespace TGP_Game_Code.Map
                 if (Velocity.Y < MaximumVerticalVelocity) Velocity.Y += AccelerationDelta(gameTime, 'Y') / 2;
 
                 // Check for collision on vertical axis
-                // Progress entity position if there is no collision
 
                 if (CheckCollision('Y'))
                 {
                     FloorCollision();
                     Velocity.Y = 0f;
-                    
+
                     // Update jumping state if there is floor underneath
 
                     if (Jump) IsJumping = true;
                 }
-                else Position.Y += (int)Velocity.Y;
+                else if ((int)Velocity.Y > 0)
+                {
+                    // Progress entity position if there is no collision
+
+                    MovedDownDuringLastUpdate = true;
+                    Position.Y += (int)Velocity.Y;
+                }
             }
             else
             {
