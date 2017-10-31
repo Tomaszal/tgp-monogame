@@ -79,6 +79,7 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Map\Enemy.cs" />
     <Compile Include="Map\Entity.cs" />
     <Compile Include="Map\Map.cs" />
     <Compile Include="Map\Player.cs" />

@@ -8,13 +8,19 @@ namespace TGP_Game_Code.States
     {
         public override void Update(GameTime gameTime)
         {
+            // Update map
+
             Map.Map.Update(gameTime);
+
+            // Exit to main menu if escape key is pressed
 
             if (Keyboard.GetState().IsKeyDown(Keys.Escape)) Main.NewStateIndex = 0;
         }
 
         public override void Draw(GameTime gameTime)
         {
+            // Draw map
+
             Map.Map.Draw(gameTime);
         }
     }

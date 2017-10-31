@@ -25,14 +25,19 @@ namespace TGP_Game_Code.Map
         public static float BackgroundRatio;
         public static Rectangle BackgroundRectangle;
 
-        // Create a static player
+        // Create a static player and starting position vector
 
-        public static Entity Player = new Player();
+        public static Player Player;
 
         // Create a static map
 
         public static List<List<Tile>> TileMap = new List<List<Tile>>();
         public static Vector2 MapSize;
+
+        // Create enemy list
+
+        public static List<Enemy> Enemies = new List<Enemy>();
+        public static float EnemyVelocity = 3f;
 
         // Create and define all tile types
 
@@ -133,9 +138,11 @@ namespace TGP_Game_Code.Map
 
                             TileMap[Y].Add(Tile);
 
-                            // Set player position if delta is 1
+                            // Add player if delta is 1
+                            // Add enemy if delta is 2
 
-                            if (PackedValueDelta == 1) Player.Position.Location = new Point(X * TileDestinationRectangle.Width, Y * TileDestinationRectangle.Height);
+                            if (PackedValueDelta == 1) Player = new Player(new Point(X * TileDestinationRectangle.Width, Y * TileDestinationRectangle.Height));
+                            else if (PackedValueDelta == 2) Enemies.Add(new Enemy(new Point(X * TileDestinationRectangle.Width, Y * TileDestinationRectangle.Height)));
 
                             break;
                         }
@@ -163,13 +170,28 @@ namespace TGP_Game_Code.Map
             BackgroundRectangle = new Rectangle(0 , 0, (int)(Main.Background.Width * BackgroundRatio), (int)(Main.Background.Height * BackgroundRatio));
         }
 
+        public static void InitializeMap()
+        {
+            Player = new Player(Player.StartingPosition);
+
+            for (X = 0; X < Enemies.Count; X++)
+            {
+                Enemies[X] = new Enemy(Enemies[X].StartingPosition);
+            }
+        }
+
         public static void Update(GameTime gameTime)
         {
-            // Update the player
+            // Update player and enemies
 
             Player.Update(gameTime);
 
-            // Update camera matrix
+            foreach (Enemy enemy in Enemies)
+            {
+                enemy.Update(gameTime);
+            }
+
+            // Update camera position and matrix
 
             // Get screen centre
 
@@ -221,9 +243,14 @@ namespace TGP_Game_Code.Map
                 }
             }
 
-            // Draw player
+            // Draw player and enemies
 
             Player.Draw(gameTime);
+
+            foreach (Enemy enemy in Enemies)
+            {
+                enemy.Draw(gameTime);
+            }
         }
     }
 }

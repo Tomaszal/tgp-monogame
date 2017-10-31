@@ -12,6 +12,7 @@ namespace TGP_Game_Code.Map
 
         // Position
 
+        public Point StartingPosition;
         public Rectangle Position = new Rectangle(0, 0, 48, 48);
         private Rectangle TexturePosition = new Rectangle(0, 0, 32, 32);
 
@@ -24,7 +25,7 @@ namespace TGP_Game_Code.Map
         public float MaximumHorizontalVelocity = 0f;
 
         public Vector2 Velocity = Vector2.Zero;
-        private Rectangle VelocityPosition;
+        public Rectangle VelocityPosition;
 
         // Movement
 
@@ -35,6 +36,7 @@ namespace TGP_Game_Code.Map
         private bool IsJumping;
         private float JumpingHeight;
         public float MaximumJumpingHeight = 0f;
+        public float MinimumJumpingHeight = 1.5f;
 
         // Collision
 
@@ -88,71 +90,93 @@ namespace TGP_Game_Code.Map
 
             return 0;
         }
+
+        public virtual void WallCollision() { }
+
+        public virtual void FloorCollision() { }
         
+        public Entity(Point startingPosition)
+        {
+            StartingPosition = startingPosition;
+            Position.Location = startingPosition;
+        }
+
         public virtual void Update(GameTime gameTime)
         {
             // Calculate horizontal entity velocity
 
             if (MoveRight != MoveLeft)
             {
+                // Accelerate entity if there is horizontal movement and velocity is not maximum
+
                 if (MoveRight && Velocity.X < MaximumHorizontalVelocity) Velocity.X += AccelerationDelta(gameTime, 'X');
                 else if (Velocity.X > -MaximumHorizontalVelocity) Velocity.X -= AccelerationDelta(gameTime, 'X');
             }
             else
             {
+                // Decelerate entity if there is no horizontal movement and velocity is not close to 0 (if it is, set it to 0)
+
                 if (Velocity.X < HorizontalAcceleration && Velocity.X > -HorizontalAcceleration) Velocity.X = 0f;
                 else if (Velocity.X < 0f) Velocity.X += AccelerationDelta(gameTime, 'X');
                 else if (Velocity.X > 0f) Velocity.X -= AccelerationDelta(gameTime, 'X');
             }
 
-            if (CheckCollision('X')) Velocity.X = 0;
+            // Check for collision on horizontal axis
+            // Progress entity position if there is no collision
+
+            if (CheckCollision('X'))
+            {
+                WallCollision();
+                Velocity.X = 0;
+            }
             else Position.X += (int)Velocity.X;
 
-            // Calculate vertical velocity (temporary)
+            // Calculate vertical velocity and jumping mechanics
 
             if (!IsJumping)
             {
+                // Accelerate entity's fall if it is not jumping and velocity is not maximum
+
                 if (Velocity.Y < MaximumVerticalVelocity) Velocity.Y += AccelerationDelta(gameTime, 'Y') / 2;
-                
+
+                // Check for collision on vertical axis
+                // Progress entity position if there is no collision
+
                 if (CheckCollision('Y'))
                 {
+                    FloorCollision();
                     Velocity.Y = 0f;
+                    
+                    // Update jumping state if there is floor underneath
+
                     if (Jump) IsJumping = true;
                 }
                 else Position.Y += (int)Velocity.Y;
             }
             else
             {
+                // Accelerate entity's jump if it is jumping and velocity is not maximum
+
                 if (Velocity.Y > -MaximumVerticalVelocity) Velocity.Y -= AccelerationDelta(gameTime, 'Y');
 
-                if (CheckCollision('Y') || !Jump || -JumpingHeight >= MaximumJumpingHeight * Map.TileDestinationRectangle.Height)
+                // Check for collision on vertical axis
+
+                if (CheckCollision('Y') || (!Jump && -JumpingHeight >= MinimumJumpingHeight * Map.TileDestinationRectangle.Height) || -JumpingHeight >= MaximumJumpingHeight * Map.TileDestinationRectangle.Height)
                 {
+                    // Reset entity jumping if there is collision
+
                     Velocity.Y = 0f;
                     JumpingHeight = 0f;
                     IsJumping = false;
                 }
                 else
                 {
+                    // Progress entity position and jump height
+
                     Position.Y += (int)Velocity.Y;
                     JumpingHeight += Velocity.Y;
                 }
             }
-
-            //if (MoveDown != MoveUp)
-            //{
-            //    if (MoveDown && Velocity.Y < MaximumVerticalVelocity) Velocity.Y += AccelerationDelta(gameTime, 'Y');
-            //    else if (Velocity.Y > -MaximumVerticalVelocity) Velocity.Y -= AccelerationDelta(gameTime, 'Y');
-            //}
-            //else
-            //{
-            //    if (Velocity.Y < VerticalAcceleration && Velocity.Y > -VerticalAcceleration) Velocity.Y = 0f;
-            //    else if (Velocity.Y < 0) Velocity.Y += AccelerationDelta(gameTime, 'Y');
-            //    else if (Velocity.Y > 0) Velocity.Y -= AccelerationDelta(gameTime, 'Y');
-            //}
-
-            //System.Diagnostics.Debug.WriteLine(Velocity.Y);
-
-            // Check for collision and act accordingly
         }
 
         public virtual void Draw(GameTime gameTime)

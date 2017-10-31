@@ -23,9 +23,11 @@ namespace TGP_Game_Code
         private static int CurrentStateIndex = 0;
         public static int NewStateIndex { private get; set; } = 0;
 
-        // Alpha value to fade the screen when transitioning states
+        // Transition alpha and rectangle
 
         private static float TransitionAlpha = 0f;
+
+        private static Rectangle TransitionRectangle = new Rectangle();
 
         // Content
 
@@ -45,7 +47,7 @@ namespace TGP_Game_Code
         // Boolean to check if left mouse button has been pressed in the previous cycle
 
         public static bool PreviousLeftMouseButtonState;
-
+        
         private static void TransitionState(GameTime gameTime)
         {
             // If CurrentState matches NewState progress fading in and escape method or escape method if fading in is already done
@@ -168,16 +170,34 @@ namespace TGP_Game_Code
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
+            // Configure sprite batch based on current state
+
             if (States[CurrentStateIndex] == States.OfType<States.GameHandler>().FirstOrDefault()) SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, Map.Map.CameraMatrix);
-            else SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
+            else SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null);
 
             // Draw current state
 
             States[CurrentStateIndex].Draw(gameTime);
 
-            // Draw black rectangle over all screen with TransitionAlpha for state transition
+            // Update transition rectangle according to current state
 
-            SpriteBatch.Draw(Blank, new Rectangle(0, 0, Graphics.PreferredBackBufferWidth, Graphics.PreferredBackBufferHeight), Color.Black * TransitionAlpha);
+            if (States[CurrentStateIndex] == States.OfType<States.GameHandler>().FirstOrDefault())
+            {
+                TransitionRectangle.X = -(int)Map.Map.CameraPosition.X;
+                TransitionRectangle.Y = -(int)Map.Map.CameraPosition.Y;
+            }
+            else
+            {
+                TransitionRectangle.X = 0;
+                TransitionRectangle.Y = 0;
+            }
+
+            TransitionRectangle.Width = Graphics.PreferredBackBufferWidth;
+            TransitionRectangle.Height = Graphics.PreferredBackBufferHeight;
+
+            // Draw a black rectangle over the screen with transition alpha
+
+            SpriteBatch.Draw(Blank, TransitionRectangle, Color.Black * TransitionAlpha);
 
             SpriteBatch.End();
 

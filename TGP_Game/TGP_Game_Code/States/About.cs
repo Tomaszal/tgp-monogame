@@ -9,7 +9,7 @@ namespace TGP_Game_Code.States
         {
             // Add texts
 
-            Texts.Add(new Text(Color.White, new Vector2(0, -200), "Version " + Assembly.GetExecutingAssembly().GetName().Version + " (rework)"));
+            Texts.Add(new Text(Color.White, new Vector2(0, -200), "Version " + Assembly.GetExecutingAssembly().GetName().Version + " (reworked)"));
             Texts.Add(new Text(Color.White, new Vector2(0, -120), "Developed by:"));
             Texts.Add(new Text(Color.White, new Vector2(0, -90), "Tomas Zaluckij"));
             Texts.Add(new Text(Color.White, new Vector2(0, -60), "(@Tomaszal)"));

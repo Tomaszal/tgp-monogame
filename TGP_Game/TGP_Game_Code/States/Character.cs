@@ -3,85 +3,89 @@ using System.Collections.Generic;
 
 namespace TGP_Game_Code.States
 {
-    // Character type classes
-
-    public class CharacterType
+    public class Characters
     {
-        public string Line1, Line2, Line3;
-        public Color Line1Color;
-        public float VelocityLimit, JumpHeightLimit;
-        public int Lifes;
-    }
+        // Set differnet character types with descriptions and options
 
-    public class Leaper : CharacterType
-    {
-        public Leaper()
+        public class CharacterType
         {
-            Line1 = "Leaper";
-            Line2 = "Jumps very high, but runs very slow.";
-            Line3 = "Has 3 lifes.";
-
-            Line1Color = Color.GreenYellow;
-
-            VelocityLimit = 4f;
-            JumpHeightLimit = 5f;
-            Lifes = 3;
+            public string Line1, Line2, Line3;
+            public Color Line1Color;
+            public float VelocityLimit, JumpHeightLimit;
+            public int Lifes;
         }
-    }
 
-    public class Muller : CharacterType
-    {
-        public Muller()
+        public class Leaper : CharacterType
         {
-            Line1 = "Muller";
-            Line2 = "Runs very fast, but very jumps low.";
-            Line3 = "Has 3 lifes.";
+            public Leaper()
+            {
+                Line1 = "Leaper";
+                Line2 = "Jumps very high, but runs very slow.";
+                Line3 = "Has 3 lifes.";
 
-            Line1Color = Color.MediumSpringGreen;
+                Line1Color = Color.GreenYellow;
 
-            VelocityLimit = 9f;
-            JumpHeightLimit = 3.5f;
-            Lifes = 3;
+                VelocityLimit = 4.5f;
+                JumpHeightLimit = 7f;
+                Lifes = 3;
+            }
         }
-    }
 
-    public class Survivalist : CharacterType
-    {
-        public Survivalist()
+        public class Muller : CharacterType
         {
-            Line1 = "Survivalist";
-            Line2 = "Does not jump high or run fast.";
-            Line3 = "Has 5 lifes.";
+            public Muller()
+            {
+                Line1 = "Muller";
+                Line2 = "Runs very fast, but very jumps low.";
+                Line3 = "Has 3 lifes.";
 
-            Line1Color = Color.MediumVioletRed;
+                Line1Color = Color.MediumSpringGreen;
 
-            VelocityLimit = 6f;
-            JumpHeightLimit = 4.5f;
-            Lifes = 3;
+                VelocityLimit = 9f;
+                JumpHeightLimit = 3.5f;
+                Lifes = 3;
+            }
         }
-    }
 
-    public class Tryhard : CharacterType
-    {
-        public Tryhard()
+        public class Survivalist : CharacterType
         {
-            Line1 = "Tryhard";
-            Line2 = "Does not jump high or run fast.";
-            Line3 = "Has 1 life.";
+            public Survivalist()
+            {
+                Line1 = "Survivalist";
+                Line2 = "Does not jump high or run fast.";
+                Line3 = "Has 5 lifes.";
 
-            Line1Color = Color.DodgerBlue;
+                Line1Color = Color.MediumVioletRed;
 
-            VelocityLimit = 6f;
-            JumpHeightLimit = 4.5f;
-            Lifes = 1;
+                VelocityLimit = 6f;
+                JumpHeightLimit = 4.5f;
+                Lifes = 3;
+            }
         }
+
+        public class Tryhard : CharacterType
+        {
+            public Tryhard()
+            {
+                Line1 = "Tryhard";
+                Line2 = "Does not jump high or run fast.";
+                Line3 = "Has 1 life.";
+
+                Line1Color = Color.DodgerBlue;
+
+                VelocityLimit = 6f;
+                JumpHeightLimit = 4.5f;
+                Lifes = 1;
+            }
+        }
+
     }
 
     class Character : State
     {
         // List of character types
 
-        private static List<CharacterType> CharacterTypes = new List<CharacterType>() { new Leaper(), new Muller(), new Survivalist(), new Tryhard() };
+        private static List<Characters.CharacterType> CharacterTypes = new List<Characters.CharacterType>() { new Characters.Leaper(), new Characters.Muller(), new Characters.Survivalist(), new Characters.Tryhard() };
 
         // Character index in character type list (also matches their position in texture)
 
@@ -89,7 +93,7 @@ namespace TGP_Game_Code.States
 
         // Character preview entity
 
-        private static Map.Entity Preview = new Map.Entity();
+        private static Map.Entity Preview = new Map.Entity(new Point(0,0));
 
         private class Next : Button
         {
@@ -126,6 +130,8 @@ namespace TGP_Game_Code.States
             public override void Action()
             {
                 // Logic for selection
+
+                Map.Map.InitializeMap();
 
                 Map.Map.Player.EntityTypeIndex = CharacterIndex;
                 Map.Map.Player.MaximumHorizontalVelocity = CharacterTypes[CharacterIndex].VelocityLimit;
