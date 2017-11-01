@@ -44,6 +44,11 @@ namespace TGP_Game_Code
 
         public static SoundEffect ButtonSound;
 
+        public static SoundEffect JumpSound;
+        public static SoundEffect DrownSound;
+        public static SoundEffect PlayerDeathSound;
+        public static SoundEffect EnemyDeathSound;
+        
         // Boolean to check if left mouse button has been pressed in the previous cycle
 
         public static bool PreviousLeftMouseButtonState;
@@ -130,7 +135,12 @@ namespace TGP_Game_Code
             // Load sounds
 
             ButtonSound = Content.Load<SoundEffect>("Sounds/Button");
-            
+
+            JumpSound = Content.Load<SoundEffect>("Sounds/Jump");
+            DrownSound = Content.Load<SoundEffect>("Sounds/Drown");
+            PlayerDeathSound = Content.Load<SoundEffect>("Sounds/PlayerDeath");
+            EnemyDeathSound = Content.Load<SoundEffect>("Sounds/EnemyDeath");
+
             // Load background music and set it to play it on repeat
 
             Song BackgroundMusic = Content.Load<Song>("Sounds/Background");

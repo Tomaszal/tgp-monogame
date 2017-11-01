@@ -44,10 +44,22 @@ namespace TGP_Game_Code.Map
 
             foreach (Enemy enemy in Map.Enemies)
             {
-                if (MovedDownDuringLastUpdate && TouchBottomOf(enemy.Position, Position)) enemy.Active = false;
-                else if (enemy.Active && (TouchRightOf(Position, enemy.Position) || TouchRightOf(enemy.Position, Position))) Active = false;
+                if (!Active) break;
 
-                //if (MovedDownDuringLastUpdate && (enemy.Position.Contains(Position.Right, Position.Bottom) || enemy.Position.Contains(Position.Left, Position.Bottom))) enemy.Active = false;
+                if (!enemy.Active) continue;
+
+                if (MovedDownDuringLastUpdate && TouchBottomOf(enemy.Position, Position))
+                {
+                    enemy.Active = false;
+
+                    Main.EnemyDeathSound.Play();
+                }
+                else if (TouchRightOf(Position, enemy.Position) || TouchRightOf(enemy.Position, Position))
+                {
+                    Active = false;
+
+                    Main.PlayerDeathSound.Play();
+                }
             }
         }
     }

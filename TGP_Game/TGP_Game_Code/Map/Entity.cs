@@ -160,7 +160,12 @@ namespace TGP_Game_Code.Map
 
                     // Update jumping state if there is floor underneath
 
-                    if (Jump) IsJumping = true;
+                    if (Jump)
+                    {
+                        IsJumping = true;
+
+                        Main.JumpSound.Play();
+                    }
                 }
                 else if ((int)Velocity.Y > 0)
                 {
