@@ -44,6 +44,7 @@ namespace TGP_Game_Code.Map
         public WaterTopTile()
         {
             TexturePosition.X *= 3;
+            Collide = false;
             ColorCode = new Color(70, 120, 180);
         }
     }

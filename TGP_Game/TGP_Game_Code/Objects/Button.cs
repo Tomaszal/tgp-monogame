@@ -14,7 +14,7 @@ namespace TGP_Game_Code.States
         protected Vector2 Position = Vector2.Zero;
         private Rectangle ButtonRectangle;
 
-        protected int StateIndex = -1;
+        public int StateIndex = -1;
 
         public Button() { }
 

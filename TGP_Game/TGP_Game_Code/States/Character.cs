@@ -59,7 +59,7 @@ namespace TGP_Game_Code.States
 
                 VelocityLimit = 6f;
                 JumpHeightLimit = 4.5f;
-                Lifes = 3;
+                Lifes = 5;
             }
         }
 
@@ -78,7 +78,6 @@ namespace TGP_Game_Code.States
                 Lifes = 1;
             }
         }
-
     }
 
     class Character : State
@@ -133,6 +132,7 @@ namespace TGP_Game_Code.States
 
                 Map.Map.InitializeMap();
 
+                Map.Map.Player.Lifes = CharacterTypes[CharacterIndex].Lifes;
                 Map.Map.Player.EntityTypeIndex = CharacterIndex;
                 Map.Map.Player.MaximumHorizontalVelocity = CharacterTypes[CharacterIndex].VelocityLimit;
                 Map.Map.Player.MaximumJumpingHeight = CharacterTypes[CharacterIndex].JumpHeightLimit;

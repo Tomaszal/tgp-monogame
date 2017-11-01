@@ -37,8 +37,8 @@ namespace TGP_Game_Code.Map
 
         // Jumping
 
-        private bool IsJumping;
-        private float JumpingHeight;
+        protected bool IsJumping;
+        protected float JumpingHeight;
         public float MaximumJumpingHeight = 0f;
         public float MinimumJumpingHeight = 1.5f;
 
