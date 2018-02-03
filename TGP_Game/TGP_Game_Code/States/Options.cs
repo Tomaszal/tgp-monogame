@@ -72,19 +72,35 @@ namespace TGP_Game_Code.States
 
             public override void Action()
             {
-                // Toggle difficulty
+                Map.Map.Difficulty++;
 
-                base.Action();
-            }
-        }
+                if (Map.Map.Difficulty > 5) Map.Map.Difficulty = 1;
 
-        private class Annotations : Button
-        {
-            public Annotations(string text, Vector2 position) : base(text, position, Color.White, -1) { }
+                switch (Map.Map.Difficulty)
+                {
+                    case 1:
+                        Text = "Difficulty: Hard to lose";
+                        Map.Map.EnemySpeed = 2f;
+                        break;
+                    case 2:
+                        Text = "Difficulty: Easy";
+                        Map.Map.EnemySpeed = 4f;
+                        break;
+                    case 3:
+                        Text = "Difficulty: Normal";
+                        Map.Map.EnemySpeed = 5f;
+                        break;
+                    case 4:
+                        Text = "Difficulty: Hard";
+                        Map.Map.EnemySpeed = 7f;
+                        break;
+                    case 5:
+                        Text = "Difficulty: Hardcore";
+                        Map.Map.EnemySpeed = 10f;
+                        break;
+                }
 
-            public override void Action()
-            {
-                // Toggle annotations
+                Map.Map.GameOn = false;
 
                 base.Action();
             }
@@ -132,8 +148,7 @@ namespace TGP_Game_Code.States
             Buttons.Add(new FullScreen("Full screen: NaN", new Vector2(0, -200)));
             Buttons.Add(new Resolution("Resolution: NaN", new Vector2(0, -150)));
             Buttons.Add(new Volume("Volume: NaN", new Vector2(0, -100)));
-            Buttons.Add(new Difficulty("Difficulty: NaN", new Vector2(0, 20)));
-            Buttons.Add(new Annotations("Annotations: NaN", new Vector2(0, 70)));
+            Buttons.Add(new Difficulty("Difficulty: Normal", new Vector2(0, 40)));
             Buttons.Add(new Button("Return", new Vector2(0, 180), Color.White, 0));
 
             // Detect the most popular screen resolutions

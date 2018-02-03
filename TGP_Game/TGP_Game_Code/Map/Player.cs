@@ -8,6 +8,9 @@ namespace TGP_Game_Code.Map
     {
         public int Lifes;
 
+        public int ScoreWalked;
+        public int ScoreKilled;
+
         public Player(Point startingPosition) : base(startingPosition) { }
 
         private bool TouchBottomOf(Rectangle r1, Rectangle r2)
@@ -36,6 +39,8 @@ namespace TGP_Game_Code.Map
             JumpingHeight = 0f;
 
             Velocity = Vector2.Zero;
+
+            Map.GameOn = true;
         }
 
         public void Die()
@@ -45,6 +50,10 @@ namespace TGP_Game_Code.Map
             Active = false;
 
             Lifes--;
+
+            Map.GameOn = false;
+
+            Map.Player.ScoreKilled -= (int)System.Math.Pow(Map.Difficulty, 2) * 10;
 
             Main.NewStateIndex = 5;
         }
@@ -80,6 +89,10 @@ namespace TGP_Game_Code.Map
 
             base.Update(gameTime);
 
+            // Update walk score
+
+            if (ScoreWalked < Position.X / 5) ScoreWalked = Position.X / 5;
+
             // Check for collisions with enemies
 
             foreach (Enemy enemy in Map.Enemies)
@@ -91,6 +104,8 @@ namespace TGP_Game_Code.Map
                 if (MovedDownDuringLastUpdate && TouchBottomOf(enemy.Position, Position))
                 {
                     enemy.Active = false;
+
+                    ScoreKilled += (int)System.Math.Pow(Map.Difficulty, 2) * 10;
 
                     Main.EnemyDeathSound.Play();
                 }

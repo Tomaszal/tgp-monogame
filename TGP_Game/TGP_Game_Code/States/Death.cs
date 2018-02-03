@@ -44,6 +44,8 @@ namespace TGP_Game_Code.States
 
                 Buttons[0].StateIndex = 0;
                 Buttons[0].Text = "Press R to return to main menu.";
+
+                Map.Map.GameOn = false;
             }
             else
             {
@@ -53,6 +55,8 @@ namespace TGP_Game_Code.States
                 Buttons[0].StateIndex = 4;
                 Buttons[0].Text = "Press R to respawn.";
             }
+
+            Texts[2].TextString = "Your score: " + (Map.Map.Player.ScoreKilled + Map.Map.Player.ScoreWalked);
 
             // Check for R key press
 

@@ -9,6 +9,8 @@ namespace TGP_Game_Code.Map
 
         private int BottomTile, CornerTile;
 
+        private float DeadAlpha = 1f;
+
         public Enemy(Point startingPosition) : base(startingPosition)
         {
             // Set enemy entity type and maximum velocity
@@ -37,7 +39,11 @@ namespace TGP_Game_Code.Map
 
             // Flip movement direction if the bottom corner tile is dark stone (bad implementation)
 
-            if (Map.TileMap[BottomTile][CornerTile].TexturePosition.X / 7 == Map.TileSourceRectangle.X) RightMovement = !RightMovement;
+            if (Map.TileMap[BottomTile][CornerTile].TexturePosition.X / 7 == Map.TileSourceRectangle.X)
+            {
+                RightMovement = !RightMovement;
+                Velocity.X = 0;
+            }
         }
 
         public override void Update(GameTime gameTime)
@@ -48,6 +54,22 @@ namespace TGP_Game_Code.Map
             MoveLeft = !RightMovement;
 
             base.Update(gameTime);
+        }
+
+        public override void Draw(GameTime gameTime)
+        {
+            // Fade away the enemy if it's dead
+
+            if (!Active)
+            {
+                DeadAlpha -= 0.025f;
+
+                Main.SpriteBatch.Draw(Main.Entities, Position, new Rectangle(EntityTypeIndex * 96, 0, 32, 32), Color.White * DeadAlpha);
+
+                return;
+            }
+
+            base.Draw(gameTime);
         }
     }
 }

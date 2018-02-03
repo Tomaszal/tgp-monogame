@@ -137,6 +137,8 @@ namespace TGP_Game_Code.States
                 Map.Map.Player.MaximumHorizontalVelocity = CharacterTypes[CharacterIndex].VelocityLimit;
                 Map.Map.Player.MaximumJumpingHeight = CharacterTypes[CharacterIndex].JumpHeightLimit;
 
+                Map.Map.GameOn = true;
+
                 base.Action();
             }
         }

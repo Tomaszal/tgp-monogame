@@ -4,11 +4,17 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using TGP_Game_Code.States;
 
 namespace TGP_Game_Code.Map
 {
     public static class Map
     {
+        // Is game active or not
+
+        public static bool GameOn = false;
+
         // Camera that follows the player
 
         public static Matrix CameraMatrix;
@@ -54,7 +60,9 @@ namespace TGP_Game_Code.Map
         private static List<Tile> TileTypes = new List<Tile> { AirTile, DirtTile, GrassTile, WaterTopTile, WaterBottomTile, LightStoneTile, DarkStoneTile, WinTile };
 
         // Others
-
+        
+        public static int Difficulty = 3;
+        public static float EnemySpeed = 5f;
         private static int X, Y;
         private static uint PackedValueDelta;
 
@@ -177,6 +185,7 @@ namespace TGP_Game_Code.Map
             for (X = 0; X < Enemies.Count; X++)
             {
                 Enemies[X] = new Enemy(Enemies[X].StartingPosition);
+                Enemies[X].MaximumHorizontalVelocity = EnemySpeed;
             }
         }
 
@@ -251,6 +260,21 @@ namespace TGP_Game_Code.Map
             {
                 enemy.Draw(gameTime);
             }
+
+            // Draw lifes
+
+            Main.SpriteBatch.DrawString(Main.DefaultFont, "Lifes left:", new Vector2(20 - CameraPosition.X, 20 - CameraPosition.Y), Color.White);
+
+            for (int i = 1; i <= Player.Lifes; i++)
+            {
+                Main.SpriteBatch.Draw(Main.Hearth, new Rectangle((int)Main.DefaultFont.MeasureString("Lifes left:").X + 40 * i - (int)CameraPosition.X, 27 - (int)CameraPosition.Y, 30, 30), Color.White);
+            }
+
+            // Draw score
+
+            string text = "Score: " + (Player.ScoreKilled + Player.ScoreWalked);
+
+            Main.SpriteBatch.DrawString(Main.DefaultFont, text, new Vector2(Main.Graphics.PreferredBackBufferWidth - CameraPosition.X - (int)Main.DefaultFont.MeasureString(text).X - 20, 20 - CameraPosition.Y), Color.White);
         }
     }
 }

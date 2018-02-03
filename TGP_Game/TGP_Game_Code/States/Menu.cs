@@ -70,10 +70,24 @@ namespace TGP_Game_Code.States
             // Add buttons
 
             Buttons.Add(new Play("Play", new Vector2(0, -50)));
-            Buttons.Add(new Restart("Restart", new Vector2(0, -100), 1, Buttons.OfType<Play>().FirstOrDefault()));
+            Buttons.Add(new Restart("Restart", new Vector2(0, -100), 3, Buttons.OfType<Play>().FirstOrDefault()));
             Buttons.Add(new Button("Options", new Vector2(0, 0), Color.White, 1));
             Buttons.Add(new Button("About", new Vector2(0, 50), Color.White, 2));
             Buttons.Add(new Exit("Exit", new Vector2(0, 100), instance));
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            if(Map.Map.GameOn)
+            {
+                Buttons[0].Text = "Resume";
+            }
+            else
+            {
+                Buttons[0].Text = "Play";
+            }
+
+            base.Update(gameTime);
         }
 
         public override void Draw(GameTime gameTime)
