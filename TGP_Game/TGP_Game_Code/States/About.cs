@@ -19,7 +19,7 @@ namespace TGP_Game_Code.States
 
             // Add buttons
 
-            Buttons.Add(new Button("Return", new Vector2(0, 180), Color.White, 0));
+            Buttons.Add(new Button("Return", new Vector2(0, 180), Color.LightSlateGray, 0));
         }
 
         public override void Draw(GameTime gameTime)

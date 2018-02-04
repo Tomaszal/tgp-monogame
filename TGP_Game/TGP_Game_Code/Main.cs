@@ -99,6 +99,7 @@ namespace TGP_Game_Code
             // 3 - Character selection menu
             // 4 - Map handler (game state)
             // 5 - Respawn screen
+            // 6 - Win screen
 
             States.Add(new States.Menu(this));
             States.Add(new States.Options());
@@ -106,11 +107,12 @@ namespace TGP_Game_Code
             States.Add(new States.Character());
             States.Add(new States.GameHandler());
             States.Add(new States.Death());
+            States.Add(new States.Win());
 
             // Make mouse visible and toggle full screen
 
             IsMouseVisible = true;
-            //Graphics.ToggleFullScreen();
+            Graphics.ToggleFullScreen();
 
             base.Initialize();
         }
@@ -150,7 +152,7 @@ namespace TGP_Game_Code
             // Load background music and set it to play it on repeat
 
             Song BackgroundMusic = Content.Load<Song>("Sounds/Background");
-            //MediaPlayer.Play(BackgroundMusic);
+            MediaPlayer.Play(BackgroundMusic);
             MediaPlayer.IsRepeating = true;
 
             // Load map

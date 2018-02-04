@@ -6,6 +6,8 @@ namespace TGP_Game_Code.Map
 {
     public class Player : Entity
     {
+        private Vector2 MapPosition;
+
         public int Lifes;
 
         public int ScoreWalked;
@@ -62,13 +64,29 @@ namespace TGP_Game_Code.Map
         {
             if (!Active) return;
 
-            // Die if player is in water (bad implementation)
+            // Calculate player's position on map
 
-            if (Map.TileMap[(int)Math.Floor((float)Position.Center.Y / Map.TileDestinationRectangle.Height)][(int)Math.Floor((float)Position.Center.X / Map.TileDestinationRectangle.Width)].TexturePosition.X / 3 == Map.TileSourceRectangle.X)
+            MapPosition.Y = (int)Math.Floor((float)Position.Center.Y / Map.TileDestinationRectangle.Height);
+            MapPosition.X = (int)Math.Floor((float)Position.Center.X / Map.TileDestinationRectangle.Width);
+            
+            // Die if player is in water
+
+            if (Map.TileMap[(int)MapPosition.Y][(int)MapPosition.X].TexturePosition.X / 3 == Map.TileSourceRectangle.X)
             {
                 Die();
 
                 Main.DrownSound.Play();
+            }
+
+            // Win if player is in winning position
+
+            if (Math.Abs(Map.WinPos.X - MapPosition.X) <= 1 && Math.Abs(Map.WinPos.Y - MapPosition.Y) <= 1)
+            {
+                Active = false;
+
+                Map.GameOn = false;
+
+                Main.NewStateIndex = 6;
             }
         }
 

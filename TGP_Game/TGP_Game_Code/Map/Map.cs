@@ -65,6 +65,7 @@ namespace TGP_Game_Code.Map
         public static float EnemySpeed = 5f;
         private static int X, Y;
         private static uint PackedValueDelta;
+        public static Vector2 WinPos;
 
         public static void SaveMap(GraphicsDevice graphicsDevice, string mapName)
         {
@@ -139,12 +140,16 @@ namespace TGP_Game_Code.Map
                         // Calculate packed value delta of colors in map data and different tile types
 
                         PackedValueDelta = Tile.ColorCode.PackedValue - MapData[Y * (int)MapSize.X + X].PackedValue;
-                        
+
                         if (PackedValueDelta <= 10)
                         {
                             // Add tile of matched type
 
                             TileMap[Y].Add(Tile);
+
+                            // Set the winning tile position if needed
+
+                            if (Tile.TexturePosition.X / 6 == TileSourceRectangle.X) WinPos = new Vector2(X, Y);
 
                             // Add player if delta is 1
                             // Add enemy if delta is 2
@@ -161,7 +166,7 @@ namespace TGP_Game_Code.Map
                     if (TileMap[Y].Count != X + 1) TileMap[Y].Add(NullTile);
                 }
             }
-
+            
             // Dispose of map image texture
 
             MapImage.Dispose();

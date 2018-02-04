@@ -3,58 +3,27 @@ using Microsoft.Xna.Framework.Input;
 
 namespace TGP_Game_Code.States
 {
-    class Death : State
+    class Win : State
     {
         int HearthIndex;
         Rectangle HearthRectangle = new Rectangle(0, 0, 80, 80);
 
-        private class RespawnButton : Button
-        {
-            public RespawnButton(string text, Vector2 position, Color color, int index) : base(text, position, color, index) { }
-
-            public override void Action()
-            {
-                Map.Map.Player.Respawn();
-
-                base.Action();
-            }
-        }
-
-        public Death()
+        public Win()
         {
             // Add texts
 
-            Texts.Add(new Text(Color.IndianRed, new Vector2(0, -240), "You have died!"));
+            Texts.Add(new Text(Color.MediumVioletRed, new Vector2(0, -240), "You have won the game!"));
             Texts.Add(new Text(Color.White, new Vector2(0, -120), "Lifes left:"));
             Texts.Add(new Text(Color.White, new Vector2(0, 90), "Your score:"));
 
             // Add button
 
-            Buttons.Add(new RespawnButton("Press R to respawn.", new Vector2(0, 180), Color.LightSlateGray, 4));
+            Buttons.Add(new Button("Press R to return to main menu.", new Vector2(0, 180), Color.LightSlateGray, 0));
         }
 
         public override void Update(GameTime gameTime)
         {
-            // Update texts and button
-            
-            if (Map.Map.Player.Lifes == 0)
-            {
-                Texts[0].TextString = "You have lost!";
-                Texts[1].TextString = "";
-
-                Buttons[0].StateIndex = 0;
-                Buttons[0].Text = "Press R to return to main menu.";
-
-                Map.Map.GameOn = false;
-            }
-            else
-            {
-                Texts[0].TextString = "You have died!";
-                Texts[1].TextString = "Lifes left:";
-
-                Buttons[0].StateIndex = 4;
-                Buttons[0].Text = "Press R to respawn.";
-            }
+            // Update score text
 
             Texts[2].TextString = "Your score: " + (Map.Map.Player.ScoreKilled + Map.Map.Player.ScoreWalked);
 

@@ -24,7 +24,7 @@ namespace TGP_Game_Code.States
         {
             Button Play;
 
-            public Restart(string text, Vector2 position, int stateIndex, Button play) : base(text, position, Color.White, stateIndex)
+            public Restart(string text, Vector2 position, int stateIndex, Button play) : base(text, position, Color.OrangeRed, stateIndex)
             {
                 Play = play;
             }
@@ -50,7 +50,7 @@ namespace TGP_Game_Code.States
         {
             private Game Instance;
 
-            public Exit(string text, Vector2 position, Game instance) : base(text, position, Color.White, -1)
+            public Exit(string text, Vector2 position, Game instance) : base(text, position, Color.LightSlateGray, -1)
             {
                 Instance = instance;
             }

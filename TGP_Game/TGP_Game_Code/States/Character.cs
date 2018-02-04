@@ -157,7 +157,7 @@ namespace TGP_Game_Code.States
             Buttons.Add(new Next(">", new Vector2(50, 0), Color.PaleVioletRed));
             Buttons.Add(new Previous("<", new Vector2(-54, 0), Color.PaleVioletRed));
             Buttons.Add(new Select("Select", new Vector2(0, 100), Color.PaleVioletRed));
-            Buttons.Add(new Button("Return", new Vector2(0, 180), Color.White, 0));
+            Buttons.Add(new Button("Return", new Vector2(0, 180), Color.LightSlateGray, 0));
         }
 
         public override void Update(GameTime gameTime)

@@ -149,7 +149,7 @@ namespace TGP_Game_Code.States
             Buttons.Add(new Resolution("Resolution: NaN", new Vector2(0, -150)));
             Buttons.Add(new Volume("Volume: NaN", new Vector2(0, -100)));
             Buttons.Add(new Difficulty("Difficulty: Normal", new Vector2(0, 40)));
-            Buttons.Add(new Button("Return", new Vector2(0, 180), Color.White, 0));
+            Buttons.Add(new Button("Return", new Vector2(0, 180), Color.LightSlateGray, 0));
 
             // Detect the most popular screen resolutions
 

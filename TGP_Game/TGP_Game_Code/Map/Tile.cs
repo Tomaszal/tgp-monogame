@@ -9,6 +9,7 @@ namespace TGP_Game_Code.Map
         public Rectangle TexturePosition = Map.TileSourceRectangle;
         public bool Collide = true;
         public Color ColorCode = new Color(0, 0, 0);
+        public bool Win = false;
     }
 
     public class AirTile : Tile

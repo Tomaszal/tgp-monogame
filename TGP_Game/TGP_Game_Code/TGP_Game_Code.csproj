@@ -96,6 +96,7 @@
     <Compile Include="States\Options.cs" />
     <Compile Include="States\State.cs" />
     <Compile Include="Objects\Text.cs" />
+    <Compile Include="States\Win.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TGP_Game_Content\TGP_Game_Content.contentproj">
